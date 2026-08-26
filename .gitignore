@@ -1,0 +1,81 @@
+# ---------------------------------------------------------------
+# Dependencies and build output
+# ---------------------------------------------------------------
+node_modules/
+frontend/dist/
+dist-ssr/
+*.local
+
+
+# ---------------------------------------------------------------
+# Theme material
+#
+# The ThemeXriver "Consulting" template is licensed to us, not ours
+# to redistribute — and it is heavy: 12 MB of reference pages plus
+# 8 MB of binary assets, none of which we author or edit.
+#
+# `scripts/restore-theme-assets.sh` re-downloads everything here, so
+# a fresh clone is one command away from running. Do not delete that
+# script: without it these ignores would make the repo unbuildable.
+# ---------------------------------------------------------------
+theme-reference/
+
+frontend/public/assets/images/
+frontend/public/assets/video/
+frontend/public/assets/fonts/
+frontend/public/assets/bootstrap/fonts/
+
+# NOTE: assets/css/ is deliberately NOT ignored. style.css is the design
+# system the whole port is built against — text, diffable, and reviewed
+# in pull requests like any other source file.
+
+# Full-resolution generated originals (PNGs straight from Nano Banana,
+# ~2 MB each). The optimised JPEGs we actually ship are committed, under
+# frontend/public/assets/generated/.
+assets-source/generated/
+
+
+# ---------------------------------------------------------------
+# Environment and secrets
+# ---------------------------------------------------------------
+.env
+.env.*
+!.env.example
+
+
+# ---------------------------------------------------------------
+# Logs and caches
+# ---------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.cache/
+.vite/
+coverage/
+
+
+# ---------------------------------------------------------------
+# Python (the FastAPI backend, from phase 7)
+# ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+
+# ---------------------------------------------------------------
+# Editors and OS cruft
+# ---------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*.swo
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json

@@ -1,0 +1,210 @@
+/* ------------------------------------------------------------------
+   Fintechly — project layer.
+   Loaded AFTER the theme's style.css. Everything here is either a
+   design token lifted out of the theme, or a deliberate override.
+   Theme CSS itself stays unmodified so it remains diffable against
+   theme-reference/.
+   ------------------------------------------------------------------ */
+
+:root {
+  /* Palette, extracted from theme-reference/assets/css/style.css */
+  --fx-accent: #48c7ec; /* 185 uses — primary brand colour */
+  --fx-navy: #092a48; /* top contact bar */
+  --fx-navy-deep: #0d1d36; /* footer */
+  --fx-navy-darkest: #031633;
+  --fx-heading: #222222;
+  --fx-body: #6a6a6a;
+  --fx-muted: #999999;
+  --fx-white: #ffffff;
+
+  /* Type — the theme ships Poppins 300/400/500/600/700 and nothing else */
+  --fx-font: "Poppins", sans-serif;
+}
+
+/* The theme animates elements in on scroll via animate.css classes that
+   WOW.js used to trigger. useReveal() adds .fx-revealed instead, so the
+   element stays invisible until it enters the viewport. */
+.fx-reveal {
+  opacity: 0;
+}
+
+.fx-reveal.fx-revealed {
+  opacity: 1;
+}
+
+/* Anyone who has asked their OS for less motion gets no reveal at all,
+   rather than a delayed one. WOW.js had no equivalent. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-reveal,
+  .fx-reveal.fx-revealed {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
+/* React Router renders <Link>, not <a href>, but the theme styles anchors
+   heavily. Keep link colour inheritance predictable. */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--fx-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- off-canvas mobile menu ----------------------------------
+   The theme hides every submenu with
+   `#offcanvas-menu .menu-wrapper li ul { display: none; }` and used
+   jQuery slideToggle to reveal them. React toggles .fx-open instead, so
+   this rule needs at least equal specificity to win. */
+#offcanvas-menu .menu-wrapper li ul.fx-open {
+  display: block;
+}
+
+/* Parent items in the mobile menu are <button>, not <a>: tapping one has
+   to expand the submenu rather than navigate, or its children are
+   unreachable on touch. Give it the anchor styling the theme expects. */
+#offcanvas-menu .menu-wrapper li button.dropmenu {
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  color: #b7becd;
+  border: none;
+  border-bottom: 1px solid #b7becd;
+  padding: 10px 40px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  cursor: pointer;
+}
+
+#offcanvas-menu .menu-wrapper li button.dropmenu.active {
+  color: var(--fx-accent);
+}
+
+/* ---------- navbar layout --------------------------------------------
+   The theme only ever constrains .navbar-collapse inside a
+   992–1199px media query, so above 1199px the floated collapse block
+   resolved to ~1075px rather than shrinking to its contents. Added to
+   the logo's 264px that exceeds the 1170px container, and the whole nav
+   dropped onto a second row. Forcing shrink-to-fit puts it back inline
+   with the logo at every desktop width. */
+@media (min-width: 992px) {
+  /* Float-based shrink-to-fit would not settle here, so the header row
+     is laid out with flexbox: logo left, nav right, both on one line.
+     Dropdowns are unaffected — they position against `li`, which keeps
+     its own `position: relative`. */
+  .header-section .navbar .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+  }
+
+  .header-section .navbar .navbar-header {
+    flex: 0 0 auto;
+    float: none;
+  }
+
+  .header-section .navbar .navbar-collapse {
+    flex: 0 1 auto;
+    width: auto;
+    float: none;
+    padding: 0;
+  }
+
+  .header-section .navbar .navbar-collapse .navbar-nav {
+    margin: 0;
+    float: none;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+
+  .header-section .navbar .navbar-collapse .navbar-nav > li {
+    float: none;
+    white-space: nowrap;
+  }
+
+  /* Seven labels do not fit beside the theme's full-size logo inside a
+     1170px container, so the logo is scaled down. Constrain it by HEIGHT,
+     not width: the theme's `.navbar-brand` padding leaves a 50px box, and
+     a width-capped image overflowed it to 87px, dropping the logo's centre
+     18px below the nav's. Matching the 100px nav row and centring inside
+     it keeps the two optically aligned. */
+  .header-section .navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* The theme sizes the logo with `padding: 24px 0` on the <img> itself,
+     under a `.homePageFive`/`.subPage` prefixed selector. Two things follow:
+       1. box-sizing is border-box, so that 48px of padding consumed any
+          height we set and collapsed the image to zero width.
+       2. the prefixed selector outranks a plain `.header-section ...` one,
+          so the override has to carry the same prefixes to take effect.
+     `flex: 0 0 auto` stops the flex row shrinking the width independently
+     of the height, which was distorting a 5.18:1 logo to 1.29:1.
+     40px tall renders it 207px wide and leaves the nav its room. */
+  .homePageFive .header-section .navbar .navbar-header .navbar-brand img,
+  .subPage .header-section .navbar .navbar-header .navbar-brand img {
+    flex: 0 0 auto;
+    padding: 0;
+    height: 40px;
+    width: auto;
+    max-width: none;
+  }
+
+  /* The theme spaces items with ~12px of margin on each li, which alone
+     costs 167px across seven items — more than the shortfall. Space them
+     with padding on the link instead, so the gap is still clickable. */
+  .header-section .navbar .navbar-collapse .navbar-nav > li {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* With the shorter "Design & Development" label there is room to keep
+     the theme's own 14px nav type rather than shrinking it. */
+  .header-section .navbar .navbar-collapse .navbar-nav > li > a {
+    padding-left: 6px;
+    padding-right: 6px;
+  }
+
+  /* The caret sat flush against the label once the link padding came
+     down. Give it its own breathing room instead. */
+  .header-section .navbar .navbar-collapse .navbar-nav > li > a > .fa {
+    margin-left: 6px;
+  }
+}
+
+/* ---------- dropdown width -------------------------------------------
+   The theme fixes its dropdowns at `min-width: 200px`, which suited its
+   own short labels. Ours run to 186px of text on top of 30px of left
+   padding, so the longest items ("B2B Appointment Setting", "Prospect &
+   List Building") spilled through the right edge of the card. Size the
+   card to its content instead, with a ceiling so a long label wraps
+   rather than running off the page. */
+.header-section .navbar .navbar-collapse .navbar-nav li .dropdown-menu {
+  width: max-content;
+  min-width: 100%;
+  max-width: 320px;
+}
+
+.header-section .navbar .navbar-collapse .navbar-nav li .dropdown-menu li a {
+  padding-right: 30px;
+}
+
+/* ---------- navbar density -------------------------------------------
+   The template carried six short top-level items; this site carries
+   seven, including "Digital Design & Development". At 992–1199px the
+   container is only 970px, so the labels need to give up some width.
+   The theme already drops the logo to 180px at this breakpoint. */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .header-section .navbar .navbar-collapse .navbar-nav > li > a {
+    padding-left: 3px;
+    padding-right: 3px;
+    font-size: 12px;
+  }
+}
