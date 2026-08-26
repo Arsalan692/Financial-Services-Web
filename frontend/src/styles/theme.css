@@ -21,23 +21,46 @@
   --fx-font: "Poppins", sans-serif;
 }
 
-/* The theme animates elements in on scroll via animate.css classes that
-   WOW.js used to trigger. useReveal() adds .fx-revealed instead, so the
-   element stays invisible until it enters the viewport. */
+/* Scroll reveal — the replacement for WOW.js. useReveal() adds
+   `fx-revealed` when the element enters the viewport; until then it sits
+   faded and slightly offset. Direction modifiers let two halves of a row
+   arrive from opposite sides. */
 .fx-reveal {
   opacity: 0;
+  transform: translateY(26px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.fx-reveal-left {
+  transform: translateX(-32px);
+}
+
+.fx-reveal-right {
+  transform: translateX(38px);
+}
+
+.fx-reveal-delay {
+  transition-delay: 0.18s;
 }
 
 .fx-reveal.fx-revealed {
   opacity: 1;
+  transform: none;
 }
 
-/* Anyone who has asked their OS for less motion gets no reveal at all,
-   rather than a delayed one. WOW.js had no equivalent. */
+/* Anyone who has asked their OS for less motion gets the finished state
+   immediately, with no offset and no transition. WOW.js had no equivalent. */
 @media (prefers-reduced-motion: reduce) {
   .fx-reveal,
-  .fx-reveal.fx-revealed {
+  .fx-reveal.fx-revealed,
+  .fx-reveal-left,
+  .fx-reveal-right {
     opacity: 1;
+    transform: none;
+    transition: none;
     animation: none !important;
   }
 }
@@ -98,6 +121,11 @@ button:focus-visible {
     align-items: center;
     justify-content: space-between;
     flex-wrap: nowrap;
+    /* A guaranteed minimum separation between the logo and the first nav
+       item. Without it the two are only as far apart as whatever width
+       happens to be left over — which came to 11px, so they nearly
+       touched. */
+    gap: 40px;
   }
 
   .header-section .navbar .navbar-header {
@@ -165,11 +193,14 @@ button:focus-visible {
     margin-right: 0;
   }
 
-  /* With the shorter "Design & Development" label there is room to keep
-     the theme's own 14px nav type rather than shrinking it. */
+  /* Seven labels at the theme's 14px came to 900px inside a 1118px
+     content box, leaving the logo almost touching "HOME". One point of
+     type buys back ~58px, which is invisible in the label and very
+     visible in the gap. */
   .header-section .navbar .navbar-collapse .navbar-nav > li > a {
     padding-left: 6px;
     padding-right: 6px;
+    font-size: 13px;
   }
 
   /* The caret sat flush against the label once the link padding came
@@ -203,8 +234,507 @@ button:focus-visible {
    The theme already drops the logo to 180px at this breakpoint. */
 @media (min-width: 992px) and (max-width: 1199px) {
   .header-section .navbar .navbar-collapse .navbar-nav > li > a {
-    padding-left: 3px;
-    padding-right: 3px;
-    font-size: 12px;
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: 11px;
+  }
+
+  /* The theme drops its own logo at this breakpoint too. Going further
+     keeps the 40px gap intact inside a 918px content box. */
+  .homePageFive .header-section .navbar .navbar-header .navbar-brand img,
+  .subPage .header-section .navbar .navbar-header .navbar-brand img {
+    height: 30px;
+  }
+
+  .header-section .navbar .navbar-collapse .navbar-nav > li > a > .fa {
+    margin-left: 4px;
+  }
+}
+
+/* ---------- hero ------------------------------------------------------
+   The theme's hero styling all hangs off Revolution Slider's `tp-*`
+   class names, which disappeared with the plugin. This rebuilds it
+   against the Swiper markup in Hero.jsx.
+
+   Two things matter for matching the original:
+     - There is NO scrim. `.slider-section` in the theme is just
+       `overflow: hidden`; white text sits directly on the photograph.
+       An overlay makes the section look heavy and dark next to the demo.
+     - Type is large: 60px/700 with a 90px line-height for the headline
+       and 24px for the body, taken from `#rev_slider_5` in style.css.
+   ------------------------------------------------------------------- */
+.fx-hero {
+  position: relative;
+  overflow: hidden;
+}
+
+.fx-hero-slide {
+  position: relative;
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* The photograph, as its own layer so it can move independently of the
+   copy — the template used Revolution's Ken Burns extension for this. */
+.fx-hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+}
+
+.swiper-slide-active .fx-hero-bg {
+  animation: fxKenBurns 9s ease-out forwards;
+}
+
+@keyframes fxKenBurns {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.fx-hero-slide .container {
+  position: relative;
+  z-index: 1;
+}
+
+.fx-hero-content {
+  max-width: 700px;
+  padding: 40px 0;
+}
+
+.fx-hero-heading {
+  color: #ffffff;
+  font-size: 60px;
+  font-weight: 700;
+  line-height: 78px;
+  margin: 14px 0 15px;
+  text-wrap: balance;
+}
+
+.fx-hero-body {
+  color: #ffffff;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 35px;
+  margin: 0 0 34px;
+  max-width: 30em;
+}
+
+.fx-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.fx-hero-actions .btn {
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 25px;
+}
+
+.fx-hero-actions .btn::before {
+  border-radius: 25px;
+}
+
+/* The theme's second hero button is white with cyan text, but that rule
+   is scoped to `#rev_slider_1` … `#rev_slider_6` — IDs Revolution Slider
+   generated, which no longer exist. Restated here against our markup,
+   including the navy sweep its ::before performs on hover. */
+.fx-hero-actions .btn.color-bg {
+  background: #ffffff;
+  color: var(--fx-accent);
+}
+
+.fx-hero-actions .btn.color-bg::before {
+  background-color: var(--fx-navy);
+}
+
+.fx-hero-actions .btn.color-bg:hover,
+.fx-hero-actions .btn.color-bg:focus,
+.fx-hero-actions .btn.color-bg.fx-force-hover {
+  color: #ffffff;
+}
+
+/* The hover fill is a ::before that expands over the button. Because the
+   button's own background stays a contrasting colour underneath (white
+   for .color-bg, cyan otherwise), the antialiased edge of that rounded
+   overlay let a hairline of the layer below bleed through — visible as a
+   faint light-blue rim around the pill on hover. Fading the button's own
+   background to the same navy removes the contrast, so there is nothing
+   left to show through. */
+.fx-hero-actions .btn:hover,
+.fx-hero-actions .btn:focus,
+.fx-hero-actions .btn.fx-force-hover {
+  background-color: var(--fx-navy);
+}
+
+/* ---------- hero entrance ---------------------------------------------
+   Revolution Slider animated each line separately through `data-frames`
+   strings: the headline wiped in from the right behind a mask, the body
+   copy rose from below on a 1s delay, and the buttons wiped in last.
+   These keyframes reproduce that sequence, tightened up — the original's
+   2.2s delay on the buttons is slow to sit through on every loop.
+
+   The animation is keyed to `.swiper-slide-active`, so it replays each
+   time a slide comes round. */
+.fx-hero-heading,
+.fx-hero-body,
+.fx-hero-actions {
+  opacity: 0;
+}
+
+.swiper-slide-active .fx-hero-heading {
+  animation: fxWipeIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.swiper-slide-active .fx-hero-body {
+  animation: fxRiseIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+.swiper-slide-active .fx-hero-actions {
+  animation: fxWipeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+
+@keyframes fxWipeIn {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+    clip-path: inset(0 0 0 100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes fxRiseIn {
+  from {
+    opacity: 0;
+    transform: translateY(34px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Everything above is decoration. Anyone who has asked for less motion
+   gets the finished state immediately, with no drift and no wipe. */
+@media (prefers-reduced-motion: reduce) {
+  .fx-hero-heading,
+  .fx-hero-body,
+  .fx-hero-actions {
+    opacity: 1;
+  }
+
+  .swiper-slide-active .fx-hero-heading,
+  .swiper-slide-active .fx-hero-body,
+  .swiper-slide-active .fx-hero-actions,
+  .swiper-slide-active .fx-hero-bg {
+    animation: none;
+  }
+
+  .fx-hero-bg {
+    transform: none;
+  }
+}
+
+/* Swiper's own controls, restyled to the theme's accent. */
+.fx-hero-swiper .swiper-button-next,
+.fx-hero-swiper .swiper-button-prev {
+  color: #ffffff;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+
+.fx-hero-swiper:hover .swiper-button-next,
+.fx-hero-swiper:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+.fx-hero-swiper .swiper-button-next::after,
+.fx-hero-swiper .swiper-button-prev::after {
+  font-size: 26px;
+}
+
+.fx-hero-swiper .swiper-pagination-bullet {
+  background: #ffffff;
+  opacity: 0.5;
+  width: 10px;
+  height: 10px;
+}
+
+.fx-hero-swiper .swiper-pagination-bullet-active {
+  background: var(--fx-accent);
+  opacity: 1;
+}
+
+/* Type steps down exactly where the theme's does. */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .fx-hero-heading {
+    font-size: 40px;
+    line-height: 60px;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .fx-hero-slide {
+    min-height: 520px;
+  }
+
+  .fx-hero-heading {
+    font-size: 30px;
+    line-height: 50px;
+  }
+
+  .fx-hero-swiper .swiper-button-next,
+  .fx-hero-swiper .swiper-button-prev {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .fx-hero-slide {
+    min-height: 440px;
+  }
+
+  .fx-hero-heading {
+    font-size: 25px;
+    line-height: 40px;
+    margin: 0 0 9px;
+  }
+
+  .fx-hero-body {
+    font-size: 16px;
+    line-height: 25px;
+    margin: 0 0 24px;
+  }
+}
+
+/* ---------- forms -----------------------------------------------------
+   The theme styles inputs but has no error state, because its form never
+   validated anything. */
+.fx-field-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #d0453b;
+}
+
+.fx-form-note {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--fx-body);
+}
+
+/* The About Company image replaces the theme's <video>, which carried
+   the sizing this block relies on. */
+.working-section .video-wrapper img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- equal-height cards ---------------------------------------
+   Bootstrap 3 floats its columns, so cards in a row are only as tall as
+   their own copy. With real service descriptions of differing lengths
+   the "Learn more" links ended up on three different baselines. Flexbox
+   on the row equalises the columns; `margin-top: auto` pins the link to
+   the bottom of whichever card is tallest. */
+@media (min-width: 768px) {
+  .finance-section .row,
+  .service-section .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .finance-section .row > [class*="col-"],
+  .service-section .row > [class*="col-"] {
+    display: flex;
+  }
+
+  .finance-section .finance-wrapper,
+  .service-section .service-wrapper {
+    width: 100%;
+  }
+
+  .finance-section .finance-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* The link sits 47px under the paragraph — the theme's own
+     `p { margin-bottom: 47px }` — rather than being pushed to the bottom
+     of the card. `margin-top: auto` was doing the latter and left a
+     conspicuous gap under the shorter cards.
+
+     Alignment instead comes from the text blocks being the same height:
+     the copy is written to one-line headings and equal-length bodies, and
+     the min-heights below hold that if a narrower viewport wraps one of
+     them differently.
+
+     `align-self: center` stops the flex row stretching the theme's
+     compact pill into a full-width bar. */
+  .finance-section .finance-wrapper .link {
+    align-self: center;
+  }
+
+  .finance-section .finance-wrapper h3 {
+    min-height: 30px;
+  }
+
+  .finance-section .finance-wrapper p {
+    min-height: 75px;
+  }
+}
+
+/* The theme's service grid ran straight into the next section; the
+   "All services" button needs room of its own. */
+.service-section .text-center .btn {
+  margin-top: 20px;
+}
+
+/* ---------- framed media ---------------------------------------------
+   The theme's `.video-wrapper` was styled for a <video> element, which
+   carries its own controls and so reads as a deliberate object. A bare
+   <img> in the same slot looks dropped in, so it gets a frame built from
+   the theme's own vocabulary: the soft grey shadow used elsewhere in
+   style.css (`0 0 40px #cecece`) and a cyan corner bracket in the brand
+   accent, offset behind the image. */
+.working-section .video-wrapper {
+  position: relative;
+}
+
+.working-section .video-wrapper::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 42%;
+  height: 55%;
+  border-top: 3px solid var(--fx-accent);
+  border-left: 3px solid var(--fx-accent);
+  border-radius: 6px 0 0 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.fx-media-frame {
+  position: relative;
+  z-index: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(64, 64, 64, 0.18);
+  background: var(--fx-white);
+}
+
+.fx-media-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* A long, slow drift on hover — enough to feel alive, not enough to
+     distract while someone is reading the column beside it. */
+  transform: scale(1);
+  transition: transform 6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fx-media-frame:hover img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-media-frame img,
+  .fx-media-frame:hover img {
+    transform: none;
+    transition: none;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .working-section .video-wrapper::before {
+    display: none;
+  }
+}
+
+/* ---------- animate.css-driven reveals --------------------------------
+   The template marked its contact cut-out `wow slideInRight`, so WOW.js
+   ran animate.css's own keyframes on it. animate.css is still loaded, so
+   the same keyframes drive it here — triggered by useReveal's
+   `fx-revealed` instead of WOW.
+   ------------------------------------------------------------------- */
+.fx-anim {
+  opacity: 0;
+}
+
+.fx-anim.fx-revealed {
+  opacity: 1;
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.fx-anim-slide-right.fx-revealed {
+  animation-name: slideInRight;
+}
+
+.fx-anim-fade-left.fx-revealed {
+  animation-name: fadeInLeft;
+  animation-duration: 0.9s;
+}
+
+/* slideInRight starts 2000px to the right. The theme never guarded that,
+   and nothing in style.css sets overflow-x on html or body, so the
+   original can flash a horizontal scrollbar mid-animation.
+
+   This belongs on the SECTION, not on the figure's column. The theme
+   pulls the cut-out left over the navy panel with `margin-left: -145px`;
+   clipping at the column boundary cut that overlap off and left a white
+   gap between the two. At section level the overlap is interior, so it
+   survives, and only the off-screen slide is clipped.
+
+   `clip` rather than `hidden` because the figure also overflows the
+   section top by -175px, and `overflow-y: visible` is only legal
+   alongside `clip`. */
+.fx-clip-x {
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-anim,
+  .fx-anim.fx-revealed {
+    opacity: 1;
+    animation: none !important;
+  }
+}
+
+/* ---------- contact section spacing -----------------------------------
+   The navy panel is pulled up 55px and the template let it overhang into
+   the section that followed — `news-section section-padding`, whose 100px
+   of top padding absorbed it. That blog teaser is cut from this site, so
+   the panel ran flush into the CTA band with zero gap and read as an
+   overlap. This restores the same vertical rhythm the news section used
+   to provide. */
+.contact-section {
+  padding-bottom: 100px;
+}
+
+@media only screen and (max-width: 991px) {
+  .contact-section {
+    padding-bottom: 80px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .contact-section {
+    padding-bottom: 60px;
   }
 }
