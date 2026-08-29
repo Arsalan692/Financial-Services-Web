@@ -1,15 +1,13 @@
-import { useState } from "react";
 import useReveal from "../../hooks/useReveal.js";
-import { categories, servicesIn } from "../../data/services.js";
+import useContactForm from "../../hooks/useContactForm.js";
+import { serviceOptionGroups } from "../../data/services.js";
+import SelectField from "../common/SelectField.jsx";
 
 /* The theme's `contact-section` — a callback request form with a cut-out
    photo alongside it.
 
-   The backend lands in phase 7. Until then the form validates properly
-   and reports a real result rather than pretending to submit: nothing is
-   sent, and the message says so, so no enquiry is silently lost. */
-
-const EMPTY = { name: "", email: "", service: "", message: "" };
+   Validation and submission live in useContactForm, shared with the
+   Contact page — both post the same shape to the same endpoint. */
 
 export default function ContactStrip() {
   // The template marked the cut-out `wow slideInRight`; the form block had
@@ -17,42 +15,13 @@ export default function ContactStrip() {
   const formRef = useReveal({ threshold: 0.12 });
   const figureRef = useReveal({ threshold: 0.12 });
 
-  const [values, setValues] = useState(EMPTY);
-  const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState(null);
-
-  const update = (field) => (event) => {
-    setValues((v) => ({ ...v, [field]: event.target.value }));
-    setErrors((e) => ({ ...e, [field]: undefined }));
-  };
-
-  const validate = () => {
-    const found = {};
-    if (!values.name.trim()) found.name = "Tell us your name.";
-    if (!values.email.trim()) {
-      found.email = "We need an email to reply to.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-      found.email = "That email address does not look right.";
-    }
-    if (!values.message.trim()) {
-      found.message = "Tell us a little about your business.";
-    }
-    return found;
-  };
-
-  const onSubmit = (event) => {
-    event.preventDefault();
-    const found = validate();
-    setErrors(found);
-
-    if (Object.keys(found).length) {
-      setStatus(null);
-      return;
-    }
-
-    // Phase 7 replaces this with a POST to site.contactEndpoint.
-    setStatus("pending-backend");
-  };
+  const { values, errors, status, message, update, setField, submit } =
+    useContactForm({
+    name: "",
+    email: "",
+    service: "",
+    message: "",
+  });
 
   return (
     <section className="contact-section fx-clip-x">
@@ -73,7 +42,7 @@ export default function ContactStrip() {
                 will come back to you.
               </p>
 
-              <form className="contact-form" onSubmit={onSubmit} noValidate>
+              <form className="contact-form" onSubmit={submit} noValidate>
                 <div className="row">
                   <div className="col-sm-6 padding-right">
                     <div className="form-group">
@@ -112,28 +81,18 @@ export default function ContactStrip() {
                   </div>
 
                   <div className="col-sm-12">
-                    <div className="selection">
-                      <select
-                        name="service"
-                        className="dropdown-select"
+                    {/* form-group carries the theme's field spacing — the
+                        native select it replaced sat inside one, and
+                        without it this field ran into the textarea. */}
+                    <div className="form-group">
+                      <SelectField
+                        groups={serviceOptionGroups()}
                         value={values.service}
-                        onChange={update("service")}
-                        aria-label="Which service are you interested in?"
-                      >
-                        <option value="">Select a service (optional)</option>
-                        {categories.map((category) => (
-                          <optgroup
-                            key={category.slug}
-                            label={category.title}
-                          >
-                            {servicesIn(category.slug).map((service) => (
-                              <option key={service.slug} value={service.slug}>
-                                {service.title}
-                              </option>
-                            ))}
-                          </optgroup>
-                        ))}
-                      </select>
+                        onChange={setField("service")}
+                        placeholder="Select a service (optional)"
+                        ariaLabel="Which service are you interested in?"
+                        variant="dark"
+                      />
                     </div>
                   </div>
                 </div>
@@ -155,14 +114,22 @@ export default function ContactStrip() {
                 </div>
 
                 <div className="form-group text-center">
-                  <button className="submitBtn btn btn-primary" type="submit">
-                    Submit
+                  <button
+                    className="submitBtn btn btn-primary"
+                    type="submit"
+                    disabled={status === "sending"}
+                  >
+                    {status === "sending" ? "Sending…" : "Submit"}
                   </button>
 
-                  {status === "pending-backend" && (
-                    <p className="fx-form-note" role="status">
-                      This form is not connected yet — nothing was sent.
-                      Please email us directly in the meantime.
+                  {message && (
+                    <p
+                      className={`fx-form-note${
+                        status === "error" ? " fx-form-note-error" : ""
+                      }`}
+                      role="status"
+                    >
+                      {message}
                     </p>
                   )}
                 </div>

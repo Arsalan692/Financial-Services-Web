@@ -378,4 +378,15 @@ export const getService = (categorySlug, serviceSlug) =>
 
 export const serviceImage = (service) => service.image ?? FALLBACK_IMAGE;
 
+/* Grouped options for the contact forms' service picker, shaped the way
+   SelectField expects. */
+export const serviceOptionGroups = () =>
+  categories.map((category) => ({
+    label: category.title,
+    options: servicesIn(category.slug).map((s) => ({
+      value: s.slug,
+      label: s.title,
+    })),
+  }));
+
 export default services;

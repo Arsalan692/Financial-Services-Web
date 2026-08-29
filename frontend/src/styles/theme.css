@@ -811,3 +811,668 @@ button:focus-visible {
 .fx-category-services li a:focus {
   color: var(--fx-accent);
 }
+
+/* ---------- about page ------------------------------------------------
+   The theme's FAQ ran on jQuery UI, whose accordion styling came with the
+   plugin rather than from style.css. Rebuilt here against real buttons. */
+.fx-accordion-item {
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.fx-accordion-item h3 {
+  margin: 0;
+}
+
+.fx-accordion-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 20px 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 26px;
+  color: var(--fx-navy-deep);
+  cursor: pointer;
+  transition: color 0.25s;
+}
+
+.fx-accordion-trigger:hover,
+.fx-accordion-trigger.is-open {
+  color: var(--fx-accent);
+}
+
+.fx-accordion-trigger .fa {
+  flex: 0 0 auto;
+  font-size: 18px;
+  color: var(--fx-accent);
+}
+
+.fx-accordion-panel p {
+  margin: 0;
+  padding: 0 0 22px;
+  font-size: 15px;
+  line-height: 27px;
+  color: var(--fx-body);
+  max-width: 62ch;
+}
+
+/* The three verticals summarised on About. The theme's equivalent was an
+   Owl carousel of icon cards; this is the same idea without the plugin. */
+.fx-about-vertical {
+  padding: 0 12px;
+}
+
+.fx-about-vertical .fa {
+  font-size: 40px;
+  color: var(--fx-accent);
+  margin-bottom: 22px;
+}
+
+.fx-about-vertical h4 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  margin: 0 0 12px;
+}
+
+.fx-about-vertical h4 a {
+  color: var(--fx-navy-deep);
+}
+
+.fx-about-vertical h4 a:hover {
+  color: var(--fx-accent);
+}
+
+.fx-about-vertical p {
+  font-size: 15px;
+  line-height: 26px;
+  color: var(--fx-body);
+}
+
+.fx-vertical-count {
+  font-size: 13px !important;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fx-muted) !important;
+}
+
+/* An error on a form needs to look different from a success. */
+.fx-form-note-error {
+  color: #d0453b;
+}
+
+/* ---------- contact page select ---------------------------------------
+   The theme styles `.dropdown-select` only inside the homepage's
+   `.contact-left-bar`, so on the Contact page it fell back to native
+   browser chrome and sat oddly among the themed inputs. This gives it the
+   same treatment as the `.form-control` fields beside it. */
+.contact-section .contact-wrapper .form-section .selection {
+  position: relative;
+}
+
+.contact-section .contact-wrapper .form-section .dropdown-select {
+  width: 100%;
+  font-size: 16px;
+  color: #8f969e;
+  background-color: #eef1f5;
+  border: 0;
+  box-shadow: none;
+  border-radius: 5px;
+  padding: 22px 30px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+/* A native select loses its arrow with appearance:none, so draw one. */
+.contact-section .contact-wrapper .form-section .selection::after {
+  content: "\f107"; /* fa-angle-down */
+  font-family: FontAwesome;
+  position: absolute;
+  right: 26px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--fx-accent);
+  pointer-events: none;
+}
+
+@media only screen and (max-width: 479px) {
+  .contact-section .contact-wrapper .form-section .dropdown-select {
+    font-size: 14px;
+    padding: 20px;
+  }
+}
+
+/* ---------- about: section spacing ------------------------------------
+   `.about-office-section` has only `padding-top: 45px` in the theme. Its
+   own copy is short, so the cut-out figure lands neatly on the section
+   boundary. Ours carries more text plus a button, which pushed both hard
+   against the counter band below — the figure read as cropped and the
+   button as unaligned. */
+/* The theme lets the cut-out figure stand ON the section boundary — that
+   flush bottom edge is the intended look. Padding the section pushed it
+   up and left it floating. Instead the row bottom-aligns its two columns,
+   so the figure keeps its flush edge while the text column gets its own
+   clearance above the counter band. */
+@media (min-width: 992px) {
+  .about-office-section .row {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .about-office-section .content {
+    padding-bottom: 60px;
+  }
+
+  /* The cut-out is tall enough to run far below the text column and
+     unbalance the row. Capping its height keeps the flush bottom edge
+     while bringing the two columns closer to the same depth. */
+  .about-office-section .caption img {
+    display: block;
+    margin: 0 auto;
+    max-height: 440px;
+    width: auto;
+  }
+}
+
+@media only screen and (max-width: 991px) {
+  .about-office-section {
+    padding-bottom: 40px;
+  }
+}
+
+/* ---------- about: service carousel -----------------------------------
+   The theme's `finance-carousel` card, from index.html. Its own rules are
+   scoped to `.homePageOne`, which this page is not, so they are restated
+   here against the Swiper markup.
+
+   The hover is four bands stacked down the card, each a quarter tall,
+   scaling in from nothing with staggered delays so the navy fills in
+   steps rather than all at once. */
+.fx-service-carousel {
+  padding-top: 20px;
+}
+
+.fx-service-carousel .finance-wrapper {
+  position: relative;
+  overflow: hidden;
+  background: var(--fx-white);
+  border: 1px solid #e7e8e8;
+  border-bottom: 0;
+  text-align: center;
+  height: 100%;
+  /* Column layout so `wrapper-content` can stretch to the bottom of the
+     tallest card — otherwise its 4px cyan rule floats halfway up a card
+     whose neighbour has more copy. */
+  display: flex;
+  flex-direction: column;
+}
+
+.fx-service-carousel .finance-wrapper .icon {
+  position: relative;
+  z-index: 5;
+  margin: 30px auto 10px;
+}
+
+.fx-service-carousel .finance-wrapper .icon .fa {
+  font-size: 38px;
+  color: var(--fx-accent);
+}
+
+.fx-service-carousel .finance-wrapper .wrapper-content {
+  position: relative;
+  z-index: 5;
+  border-bottom: 4px solid var(--fx-accent);
+  flex: 1 1 auto;
+}
+
+.fx-service-carousel .finance-wrapper .wrapper-content h4 {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  margin: 0 0 15px;
+  padding: 0 20px;
+}
+
+.fx-service-carousel .finance-wrapper .wrapper-content h4 a {
+  color: var(--fx-heading);
+  transition: color 0.35s;
+}
+
+.fx-service-carousel .finance-wrapper .wrapper-content p {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 22px;
+  color: #8a8a8a;
+  padding: 0 28px 38px;
+  margin: 0;
+  transition: color 0.35s;
+}
+
+.fx-service-carousel .finance-wrapper:hover .wrapper-content h4 a,
+.fx-service-carousel .finance-wrapper:hover .wrapper-content p {
+  color: var(--fx-white);
+}
+
+.fx-service-carousel .finance-wrapper:hover .wrapper-content h4 a:hover {
+  color: var(--fx-accent);
+}
+
+.fx-service-carousel .finance-wrapper .hover span {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 25%;
+  background: var(--fx-navy);
+  opacity: 0;
+  z-index: 1;
+  transform: scaleY(0);
+  transition: all 0.35s ease;
+}
+
+.fx-service-carousel .finance-wrapper .hover .hover-one {
+  top: 0;
+  transition-delay: 0.25s;
+}
+
+.fx-service-carousel .finance-wrapper .hover .hover-two {
+  top: 25%;
+  transition-delay: 0.105s;
+}
+
+.fx-service-carousel .finance-wrapper .hover .hover-three {
+  top: 50%;
+  transition-delay: 0.105s;
+}
+
+.fx-service-carousel .finance-wrapper .hover .hover-four {
+  top: 75%;
+  transition-delay: 0s;
+}
+
+.fx-service-carousel .finance-wrapper:hover .hover span {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* Swiper needs equal-height slides for `height: 100%` on the card. */
+.fx-service-carousel .swiper-slide {
+  height: auto;
+}
+
+/* Arrows exactly as the theme styles its own finance-carousel nav:
+   34px squares, 2px cyan border, transparent, with a 12px cyan chevron,
+   filling navy on hover. */
+.fx-service-carousel .swiper {
+  padding-bottom: 74px;
+  /* Swiper sizes its arrow glyph from this variable, not from font-size
+     alone — without it the chevron renders at its 44px default and fills
+     the 34px box. */
+  --swiper-navigation-size: 14px;
+}
+
+.fx-service-carousel .swiper-button-next,
+.fx-service-carousel .swiper-button-prev {
+  top: auto;
+  bottom: 0;
+  width: 38px;
+  height: 38px;
+  /* Thin border, bold chevron — the weight sits in the arrow, not the
+     box. Reversing those two is what made the first attempt look wrong. */
+  border: 1px solid var(--fx-accent);
+  border-radius: 0;
+  background: transparent;
+  color: var(--fx-accent);
+  transition: 0.5s;
+}
+
+.fx-service-carousel .swiper-button-next:hover,
+.fx-service-carousel .swiper-button-prev:hover {
+  background: var(--fx-navy);
+  border-color: var(--fx-navy);
+  color: var(--fx-white);
+}
+
+/* Swiper 14 draws its arrow as an inline SVG, not a font glyph, so
+   `font-size` and `--swiper-navigation-size` do nothing to it — the icon
+   was scaling to 31px inside a 34px box and filling it. Size the SVG. */
+/* The SVG is 11 wide by 20 tall, so sizing it by width made it 20px tall
+   in a 38px box — about half the height, where the reference sits nearer
+   a third. Size it by HEIGHT instead. */
+.fx-service-carousel .swiper-navigation-icon {
+  height: 12px;
+  width: auto;
+}
+
+/* The SVG path is a thin filled chevron. Stroking it in the same colour
+   thickens the stroke without distorting the shape. */
+.fx-service-carousel .swiper-navigation-icon path {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Each button is offset from the centre line, so the gap between them is
+   (2 x offset) - box width. At 38px wide, -45px each leaves 14px. Any
+   offset under 38px makes them overlap. */
+.fx-service-carousel .swiper-button-prev {
+  left: 50%;
+  margin-left: -45px;
+}
+
+.fx-service-carousel .swiper-button-next {
+  right: 50%;
+  margin-right: -45px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-service-carousel .finance-wrapper .hover span {
+    transition: none;
+  }
+}
+
+/* ---------- about: getting started panel ------------------------------
+   Sits beside the FAQ in the theme's two-column `multi-section`. The
+   theme fills that column with a grid of invented client logos, which
+   would claim relationships the firm does not have — so this carries the
+   firm's actual process instead, and gives the section the weight it was
+   missing next to a plain list of questions. */
+.fx-getting-started {
+  background: var(--fx-navy);
+  border-radius: 6px;
+  padding: 44px 40px;
+  margin-left: 20px;
+}
+
+@media only screen and (max-width: 991px) {
+  .fx-getting-started {
+    margin: 50px 0 0;
+    padding: 36px 28px;
+  }
+}
+
+.fx-getting-started h3 {
+  font-size: 24px;
+  font-weight: 500;
+  color: var(--fx-white);
+  margin: 0 0 28px;
+}
+
+.fx-steps {
+  list-style: none;
+  margin: 0 0 32px;
+  padding: 0;
+  counter-reset: step;
+}
+
+.fx-steps li {
+  display: flex;
+  gap: 18px;
+  padding-bottom: 26px;
+  margin-bottom: 26px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.fx-steps li:last-child {
+  border-bottom: 0;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.fx-step-number {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  line-height: 32px;
+  text-align: center;
+  border: 2px solid var(--fx-accent);
+  color: var(--fx-accent);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.fx-step-body h4 {
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 25px;
+  color: var(--fx-white);
+  margin: 4px 0 8px;
+}
+
+.fx-step-body p {
+  font-size: 14px;
+  line-height: 24px;
+  color: #9daab8;
+  margin: 0;
+}
+
+/* The FAQ column gets a heading rhythm that matches the panel beside it. */
+.multi-section .faq-content h2 {
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0 0 26px;
+}
+
+/* ---------- about: closing the gap ------------------------------------
+   Two `section-padding` blocks back to back put 200px of empty white
+   between the carousel and the FAQ, with nothing to mark the change of
+   subject. Tighten both sides and give the FAQ a hairline to sit under. */
+.aboutPage .finance-service-section {
+  padding-bottom: 60px;
+}
+
+.aboutPage .multi-section {
+  padding-top: 70px;
+  border-top: 1px solid #ececec;
+}
+
+@media only screen and (max-width: 767px) {
+  .aboutPage .finance-service-section {
+    padding-bottom: 40px;
+  }
+
+  .aboutPage .multi-section {
+    padding-top: 50px;
+  }
+}
+
+/* ---------- FAQ: animate open -----------------------------------------
+   The panel stays in the DOM and its grid row animates 0fr -> 1fr, which
+   expands to the content's own height — no hard-coded max-height to get
+   wrong when the copy changes. */
+.fx-accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.35s ease,
+    opacity 0.3s ease;
+}
+
+.fx-accordion-panel.is-open {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.fx-accordion-panel-inner {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-accordion-panel {
+    transition: none;
+  }
+}
+
+/* ---------- getting-started button ------------------------------------
+   `.btn-primary`'s hover sweep is navy, which is this panel's own
+   background — so hovering made the button dissolve into the panel and
+   left its rounded corners showing as artefacts. On navy it inverts to
+   white instead. */
+.fx-getting-started .btn-primary::before {
+  background-color: var(--fx-white);
+}
+
+.fx-getting-started .btn-primary:hover,
+.fx-getting-started .btn-primary:focus {
+  background-color: var(--fx-white);
+  color: var(--fx-navy);
+}
+
+/* ---------- custom select ---------------------------------------------
+   Replaces the native <select>, whose popup the browser draws outside the
+   page and which therefore cannot be animated. Two variants: `light` for
+   the Contact page's pale fields, `dark` for the navy homepage strip. */
+.fx-select {
+  position: relative;
+}
+
+.fx-select-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 16px;
+  border: 0;
+  border-radius: 5px;
+  padding: 22px 30px;
+  text-align: left;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.fx-select-button .fa {
+  color: var(--fx-accent);
+  transition: transform 0.3s ease;
+}
+
+.fx-select.is-open .fx-select-button .fa {
+  transform: rotate(180deg);
+}
+
+/* The FAQ's 0fr -> 1fr grid trick does not work here: the list inside
+   carries a fixed max-height, so its size is already definite and there
+   is nothing for the fr track to resolve between — it snapped straight
+   open. Because that cap exists, max-height can be animated directly and
+   the end value is exact rather than a guess. */
+.fx-select-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 40;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.22s ease,
+    transform 0.3s ease;
+}
+
+.fx-select.is-open .fx-select-panel {
+  max-height: 272px;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.fx-select-panel-inner {
+  border-radius: 5px;
+  box-shadow: 0 10px 30px rgba(9, 42, 72, 0.18);
+}
+
+.fx-select-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  background: var(--fx-white);
+}
+
+.fx-select-panel ul ul {
+  max-height: none;
+  overflow: visible;
+}
+
+.fx-select-group {
+  display: block;
+  padding: 12px 20px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fx-muted);
+}
+
+.fx-select-option {
+  padding: 9px 20px;
+  font-size: 15px;
+  color: var(--fx-body);
+  cursor: pointer;
+  transition: 0.15s;
+}
+
+.fx-select-option.is-active {
+  background: #eef1f5;
+  color: var(--fx-navy-deep);
+}
+
+.fx-select-option.is-selected {
+  color: var(--fx-accent);
+  font-weight: 500;
+}
+
+/* Contact page: matches the pale `.form-control` fields beside it. */
+.fx-select-light .fx-select-button {
+  color: #8f969e;
+  background-color: #eef1f5;
+}
+
+/* Homepage strip: sits on the navy panel, where the inputs are white. */
+.fx-select-dark .fx-select-button {
+  font-size: 14px;
+  padding: 14px 20px;
+  color: #6a6a6a;
+  background-color: var(--fx-white);
+}
+
+.fx-select-dark .fx-select-panel ul {
+  font-size: 14px;
+}
+
+@media only screen and (max-width: 479px) {
+  .fx-select-light .fx-select-button {
+    font-size: 14px;
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-select-panel,
+  .fx-select-button .fa {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* ---------- contact intro measure -------------------------------------
+   The theme forced this to two lines with a <br>. A max-width wraps it
+   the same way without hard-coding where the break falls. */
+.contact-section .section-title p {
+  max-width: 620px;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -58,8 +58,12 @@ coverage/
 
 
 # ---------------------------------------------------------------
-# Python (the FastAPI backend, from phase 7)
+# Python (the FastAPI backend)
 # ---------------------------------------------------------------
+# Recorded contact enquiries. Personal data — never commit these.
+backend/enquiries.jsonl
+backend/*.jsonl
+
 __pycache__/
 *.py[cod]
 .venv/
