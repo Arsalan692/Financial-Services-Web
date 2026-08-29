@@ -738,3 +738,50 @@ button:focus-visible {
     padding-bottom: 60px;
   }
 }
+
+/* ---------- service detail --------------------------------------------
+   The theme's service page has no sub-heading between its intro copy and
+   its bullet list, because its list followed straight on. Ours introduces
+   the list, so the sub-head needs to sit in the type scale between the
+   36px h3 and the 16px body. */
+.service-page-section .single-service-wrapper .fx-subhead {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: var(--fx-navy-deep);
+  margin: 0 0 16px;
+}
+
+/* The image sits above the copy, so it needs its own separation. The
+   theme's carousel had `margin-bottom: 100px` in this slot; 40px suits a
+   single still image better. */
+.service-page-section .single-service-wrapper .fx-media-frame {
+  margin-bottom: 40px;
+}
+
+/* ---------- per-slide hero scrim --------------------------------------
+   The theme's own slider photographs are dark enough on the left that
+   white text holds up without help, and a blanket overlay made the whole
+   hero look heavy — so there is deliberately no global scrim.
+
+   The generated Design & Development slide is the exception. Its left
+   half is a bright window wall: measured against white, the headline area
+   sits at 1.18:1, which is essentially unreadable. This gradient lifts it
+   to roughly 5.6:1 for the headline and 4.6:1 for the body copy, both
+   past WCAG AA, and fades out by 78% so the right side of the photograph
+   keeps the airy look the rest of the hero has.
+
+   Opt in per slide via `scrim: true` in Hero.jsx — never globally. */
+.fx-hero-slide--scrim::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(9, 42, 72, 0.6) 0%,
+    rgba(9, 42, 72, 0.58) 42%,
+    rgba(9, 42, 72, 0.3) 62%,
+    rgba(9, 42, 72, 0) 78%
+  );
+  pointer-events: none;
+}

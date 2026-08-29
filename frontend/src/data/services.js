@@ -10,8 +10,9 @@
      sourced: false  → drafted by us and NOT yet verified by the client.
                        Do not treat as a claim the company has made.
 
-   `image` is null until phase 5 generates one; ServiceDetail falls back
-   to the theme's stock photo so no page is ever broken.
+   Every service has its own generated image under /assets/generated/.
+   FALLBACK_IMAGE stays as a safety net for any service added later
+   before its artwork exists.
    ------------------------------------------------------------------ */
 
 const FALLBACK_IMAGE = "/assets/images/single-service.jpg";
@@ -63,17 +64,23 @@ export const services = [
     title: "Payroll Run",
     navLabel: "Payroll Run",
     icon: "fa-money",
-    image: null,
+    image: "/assets/generated/payroll-run.jpg",
     sourced: true,
     excerpt:
-      "Accurate payroll from your own employee records, paid on time by check or ACH.",
+      "Complete payroll — from paychecks and tax deposits through to W-2s and annual returns.",
     intro:
-      "Payroll is calculated from the employee database you provide, so every run is based on your records rather than a reconstruction of them. Employees are paid quickly and accurately, and IRS notices are handled rather than forwarded to you.",
+      "Payroll run end to end. Employee and salary data is maintained against your records, paychecks go out on schedule, tax deposits are made, and every quarterly and annual return is prepared and filed — including the year-end forms your employees need.",
     includes: [
-      "Payroll calculated from the employee database you provide",
-      "Fast, accurate payment to every employee, every cycle",
+      "Payroll data maintained — employee information, salary information and tax tables",
+      "Paychecks and pay stubs printed and mailed",
       "Payment by check or ACH, whichever suits your business",
-      "IRS notices handled on your behalf",
+      "Federal and state tax deposits made on your behalf",
+      "Quarterly tax returns prepared",
+      "W-2s and 1099s prepared and mailed for all employees",
+      "Annual payroll tax returns prepared",
+      "Wage information reported to the state and the Social Security Administration",
+      "Payroll reports generated for your records",
+      "IRS notices handled rather than forwarded to you",
     ],
   },
   {
@@ -83,17 +90,19 @@ export const services = [
     title: "Bookkeeping",
     navLabel: "Bookkeeping",
     icon: "fa-book",
-    image: null,
+    image: "/assets/generated/bookkeeping.jpg",
     sourced: true,
     excerpt:
-      "Books built from your bank statements, producing reports you can act on.",
+      "Periodical closings, adjustments and full financial statements, prepared from your records.",
     intro:
-      "Accurate reporting depends entirely on accurate entries, so that is where the work goes. We prepare your financial reports from the bank statements and records you supply, and keep the books current — so nothing has to be reconstructed at year end.",
+      "Accounting handled end to end: your books closed on whatever cycle you work to, the adjustments and provisions that keep them accurate made as part of the close, and the final accounts you report from produced at the end of it.",
     includes: [
-      "Financial reports prepared from your bank statements and records",
-      "Accurate entries, because accurate reporting depends on them",
-      "Profit & Loss and Balance Sheet prepared on your schedule",
-      "Books kept current through the year, not caught up at the end of it",
+      "Periodical closing — monthly, quarterly, semi-annual and annual",
+      "Trial balance generated for each period",
+      "Adjustments for accrued expenses and liabilities",
+      "Adjustments for earned income",
+      "Provisions for depreciation, bad debts, amortisation and related items",
+      "Financial statements and final accounts — Profit & Loss, Balance Sheet, Cash Flow and Equity statements",
     ],
   },
   {
@@ -103,7 +112,7 @@ export const services = [
     title: "Tax Filing",
     navLabel: "Tax Filing",
     icon: "fa-file-text-o",
-    image: null,
+    image: "/assets/generated/tax-filing.jpg",
     sourced: true,
     // SCOPE STILL OPEN: the client is confirming which filings are in scope.
     // Sales and use tax is confirmed; anything beyond it is unconfirmed.
@@ -126,7 +135,7 @@ export const services = [
     title: "Accounts Payable & Receivable",
     navLabel: "AP & AR",
     icon: "fa-exchange",
-    image: null,
+    image: "/assets/generated/ap-ar.jpg",
     sourced: false,
     excerpt:
       "Both sides of the ledger tracked, so you always know what is owed and owing.",
@@ -146,7 +155,7 @@ export const services = [
     title: "Bank Reconciliation",
     navLabel: "Bank Reconciliation",
     icon: "fa-university",
-    image: null,
+    image: "/assets/generated/bank-reconciliation.jpg",
     sourced: true,
     excerpt:
       "Every reconciliation type you need, prepared from the data you provide.",
@@ -166,7 +175,7 @@ export const services = [
     title: "Retail Store Operations Management",
     navLabel: "Retail Store Operations",
     icon: "fa-cubes",
-    image: null,
+    image: "/assets/generated/retail-operations.jpg",
     sourced: true,
     excerpt:
       "Inventory movement managed, with dashboards giving full visibility of stock.",
@@ -188,7 +197,7 @@ export const services = [
     title: "B2B Email Marketing",
     navLabel: "B2B Email Marketing",
     icon: "fa-envelope-o",
-    image: null,
+    image: "/assets/generated/email-marketing.jpg",
     sourced: false,
     excerpt:
       "Outbound campaigns that reach the right inboxes and start real conversations.",
@@ -208,7 +217,7 @@ export const services = [
     title: "B2B Appointment Setting",
     navLabel: "B2B Appointment Setting",
     icon: "fa-calendar-check-o",
-    image: null,
+    image: "/assets/generated/appointment-setting.jpg",
     sourced: false,
     excerpt:
       "Qualified meetings booked straight into your team's calendar.",
@@ -228,7 +237,7 @@ export const services = [
     title: "B2B Market Research",
     navLabel: "B2B Market Research",
     icon: "fa-pie-chart",
-    image: null,
+    image: "/assets/generated/market-research.jpg",
     sourced: false,
     excerpt:
       "Know your market, your competitors, and where the next customers are.",
@@ -248,7 +257,7 @@ export const services = [
     title: "B2B Content Marketing",
     navLabel: "B2B Content Marketing",
     icon: "fa-pencil-square-o",
-    image: null,
+    image: "/assets/generated/content-marketing.jpg",
     sourced: false,
     excerpt:
       "Content that earns attention from the businesses you want to sell to.",
@@ -268,7 +277,7 @@ export const services = [
     title: "LinkedIn Automation",
     navLabel: "LinkedIn Automation",
     icon: "fa-linkedin",
-    image: null,
+    image: "/assets/generated/linkedin-automation.jpg",
     sourced: false,
     excerpt:
       "Consistent, personal LinkedIn outreach at a volume a team cannot sustain by hand.",
@@ -288,7 +297,7 @@ export const services = [
     title: "Prospect & List Building",
     navLabel: "Prospect & List Building",
     icon: "fa-list-ul",
-    image: null,
+    image: "/assets/generated/prospect-list-building.jpg",
     sourced: false,
     excerpt:
       "Verified contact lists built to your criteria, ready to use.",
@@ -310,7 +319,7 @@ export const services = [
     title: "Website Design & Development",
     navLabel: "Website Design & Development",
     icon: "fa-code",
-    image: null,
+    image: "/assets/generated/web-design-development.jpg",
     sourced: false,
     excerpt:
       "Websites designed and built to work on every screen and load quickly.",
@@ -330,7 +339,7 @@ export const services = [
     title: "Hosting and Domain",
     navLabel: "Hosting and Domain",
     icon: "fa-server",
-    image: null,
+    image: "/assets/generated/hosting-and-domain.jpg",
     sourced: false,
     excerpt:
       "Domains registered and sites hosted, kept online and kept current.",

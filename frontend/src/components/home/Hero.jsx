@@ -32,6 +32,21 @@ const slides = [
     primary: { label: "B2B Lead Generation", to: "/services/b2b" },
     secondary: { label: "Talk to us", to: "/contact" },
   },
+  {
+    // Generated rather than taken from the theme: nothing the template
+    // ships reads as web work. Composed with its left half open, because
+    // the headline and buttons sit there.
+    image: "/assets/generated/hero-digital.jpg",
+    // This one needs a scrim; the theme's two do not. Its left half is a
+    // bright window wall, measuring 1.18:1 against white text where the
+    // headline sits — effectively invisible. The theme's own slides are
+    // darker there (1.98:1 and 2.10:1) and were left alone deliberately.
+    scrim: true,
+    heading: "A site that works on every screen",
+    body: "Designed, built and kept online — domain, hosting and certificates included, so nothing lapses quietly.",
+    primary: { label: "Design & Development", to: "/services/digital" },
+    secondary: { label: "Talk to us", to: "/contact" },
+  },
 ];
 
 export default function Hero() {
@@ -53,7 +68,11 @@ export default function Hero() {
       >
         {slides.map((slide) => (
           <SwiperSlide key={slide.heading}>
-            <div className="fx-hero-slide">
+            <div
+              className={`fx-hero-slide${
+                slide.scrim ? " fx-hero-slide--scrim" : ""
+              }`}
+            >
               {/* The photo is its own layer so it can drift slowly while
                   the slide is active, the way the template's Ken Burns
                   extension did. */}
