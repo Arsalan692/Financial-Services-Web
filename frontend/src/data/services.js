@@ -21,6 +21,9 @@ export const categories = [
   {
     slug: "financial",
     path: "/services/financial",
+    // Reuses a representative service photograph — a category does not
+    // need artwork of its own.
+    image: "/assets/generated/bookkeeping.jpg",
     navLabel: "Financial Services",
     title: "Financial Services",
     icon: "fa-line-chart",
@@ -32,6 +35,9 @@ export const categories = [
   {
     slug: "b2b",
     path: "/services/b2b",
+    // Reuses a representative service photograph — a category does not
+    // need artwork of its own.
+    image: "/assets/generated/market-research.jpg",
     navLabel: "B2B Lead Generation",
     title: "B2B Lead Generation",
     icon: "fa-handshake-o",
@@ -43,6 +49,9 @@ export const categories = [
   {
     slug: "digital",
     path: "/services/digital",
+    // Reuses a representative service photograph — a category does not
+    // need artwork of its own.
+    image: "/assets/generated/web-design-development.jpg",
     // Shortened for the navbar — the full name is 230px on its own and
     // crowded the other six items. Pages still use the full title.
     navLabel: "Design & Development",

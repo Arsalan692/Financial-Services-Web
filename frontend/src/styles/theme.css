@@ -785,3 +785,29 @@ button:focus-visible {
   );
   pointer-events: none;
 }
+
+/* ---------- services overview ----------------------------------------
+   Each vertical on /services lists its own services under the card, so
+   the page routes people in one click rather than two. The theme has no
+   equivalent list, so this is styled to sit quietly under the card's
+   existing bottom border. */
+.fx-category-services {
+  list-style: none;
+  margin: -14px 0 22px;
+  padding: 0;
+}
+
+.fx-category-services li {
+  margin-bottom: 7px;
+}
+
+.fx-category-services li a {
+  font-size: 15px;
+  line-height: 24px;
+  color: var(--fx-body);
+}
+
+.fx-category-services li a:hover,
+.fx-category-services li a:focus {
+  color: var(--fx-accent);
+}

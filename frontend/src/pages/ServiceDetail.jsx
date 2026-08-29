@@ -1,8 +1,8 @@
 import { Link, useParams, Navigate } from "react-router-dom";
 import Layout from "../components/layout/Layout.jsx";
 import PageBanner from "../components/common/PageBanner.jsx";
+import ServiceSidebar from "../components/common/ServiceSidebar.jsx";
 import useReveal from "../hooks/useReveal.js";
-import site from "../config/site.js";
 import {
   getCategory,
   getService,
@@ -18,10 +18,8 @@ import {
    style.css, so this reuses those class names rather than inventing a
    layout.
 
-   Two substitutions from the original:
-     - Its sidebar "Brochure" block becomes a quote CTA; there is no
-       brochure to download.
-     - Its Bootstrap carousel and tab panels are dropped. Both needed
+   The sidebar is shared with the category and overview pages — see
+   ServiceSidebar. One further substitution from the original: its Bootstrap carousel and tab panels are dropped. Both needed
        Bootstrap's JS, and neither has content behind it here — a single
        image and the service's own list say the same thing without
        inventing copy to fill three tabs. */
@@ -52,69 +50,18 @@ export default function ServiceDetail() {
         <div className="container">
           <div className="row">
             <div className="col-md-4">
-              <div className="side-bar">
-                <ul className="page-list text-left">
-                  <li>
-                    <Link to={category.path}>
-                      All {category.navLabel}
-                      <i className="fa fa-angle-right" aria-hidden="true"></i>
-                    </Link>
-                  </li>
-                  {siblings.map((s) => (
-                    <li
-                      key={s.slug}
-                      className={s.slug === service.slug ? "active" : undefined}
-                    >
-                      <Link
-                        to={s.path}
-                        aria-current={
-                          s.slug === service.slug ? "page" : undefined
-                        }
-                      >
-                        {s.navLabel}
-                        <i className="fa fa-angle-right" aria-hidden="true"></i>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-
-                <ul className="location">
-                  <li className="heading">Contact</li>
-                  <li>
-                    <i className="fa fa-road" aria-hidden="true"></i>
-                    <div className="text">{site.contact.address}</div>
-                  </li>
-                  <li>
-                    <i
-                      className="fa fa-volume-control-phone"
-                      aria-hidden="true"
-                    ></i>
-                    <div className="text">
-                      <a href={site.contact.phoneHref}>{site.contact.phone}</a>
-                    </div>
-                  </li>
-                  <li>
-                    <i className="fa fa-envelope-o" aria-hidden="true"></i>
-                    <div className="text">
-                      <a href={`mailto:${site.contact.email}`}>
-                        {site.contact.email}
-                      </a>
-                    </div>
-                  </li>
-                </ul>
-
-                <div className="brochure text-left">
-                  <h4>Not sure where to start?</h4>
-                  <p>
-                    Tell us what {service.title.toLowerCase()} looks like in
-                    your business today and we will come back with what it
-                    would take to hand it over.
-                  </p>
-                  <Link to="/contact" className="btn btn-primary">
-                    Request a quote
-                  </Link>
-                </div>
-              </div>
+              <ServiceSidebar
+                links={[
+                  { label: `All ${category.navLabel}`, path: category.path },
+                  ...siblings.map((s) => ({
+                    label: s.navLabel,
+                    path: s.path,
+                    active: s.slug === service.slug,
+                  })),
+                ]}
+                ctaHeading="Not sure where to start?"
+                ctaBody={`Tell us what ${service.title.toLowerCase()} looks like in your business today and we will come back with what it would take to hand it over.`}
+              />
             </div>
 
             <div className="col-md-8">
