@@ -6,14 +6,15 @@
    ------------------------------------------------------------------ */
 
 export const site = {
-  // "Fintechly" is a working name, confirmed as a placeholder.
-  name: "Fintechly",
+  // Confirmed 2026-08-29. Domain likely fintechlydigitals.com.
+  name: "Fintechly Digitals",
   tagline: "Accounting, lead generation and web services",
 
-  // The theme ships a logo lockup reading "CONSULTING / we are your
-  // business helper". It is a placeholder until a real logo exists.
-  logo: "/assets/images/logo.png",
-  logoFooter: "/assets/images/footer-logo.png",
+  /* Built as SVG rather than generated: sharp at any size, a kilobyte
+     each, and the footer variant is the same file recoloured. Set in
+     Poppins, which the site already loads. */
+  logo: "/assets/generated/logo.svg",
+  logoFooter: "/assets/generated/logo-light.svg",
 
   contact: {
     phone: "+1 (555) 010 0100",

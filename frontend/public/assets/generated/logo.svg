@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="290" height="54" viewBox="0 0 290 54" role="img" aria-label="Fintechly Digitals">
+  <title>Fintechly Digitals</title>
+  <path d="M7 42 L22 30 L37 42" stroke="#092a48" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".35"/>
+  <path d="M10 31 L22 21 L34 31" stroke="#092a48" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".7"/>
+  <path d="M13 20 L22 12 L31 20" stroke="#48c7ec" stroke-width="4.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="56" y="29" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#092a48" letter-spacing="-0.3">Fintechly</text>
+  <text x="154" y="29" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="20" font-weight="300" fill="#48c7ec" letter-spacing="-0.3">Digitals</text>
+  <text x="57" y="43" font-family="Poppins, Helvetica, Arial, sans-serif" font-size="7" font-weight="400" fill="#8a97a5" letter-spacing="2.2">YOUR BOOKS &#183; YOUR PIPELINE</text>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 44 54" role="img" aria-label="Fintechly Digitals">
+  <title>Fintechly Digitals</title>
+  <path d="M7 42 L22 30 L37 42" stroke="#092a48" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".35"/>
+  <path d="M10 31 L22 21 L34 31" stroke="#092a48" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity=".7"/>
+  <path d="M13 20 L22 12 L31 20" stroke="#48c7ec" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>
