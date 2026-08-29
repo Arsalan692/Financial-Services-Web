@@ -10,6 +10,10 @@
      sourced: false  → drafted by us and NOT yet verified by the client.
                        Do not treat as a claim the company has made.
 
+   The six B2B services describe the offering the client pointed us at
+   (theblitzagency.com). The substance is theirs; the wording here is our
+   own — their marketing copy is their property and is not reproduced.
+
    Every service has its own generated image under /assets/generated/.
    FALLBACK_IMAGE stays as a safety net for any service added later
    before its artwork exists.
@@ -21,6 +25,8 @@ export const categories = [
   {
     slug: "financial",
     path: "/services/financial",
+    closing:
+      "Everything runs from the records you already keep, so there is no rebuilding your history before the work can start.",
     // Reuses a representative service photograph — a category does not
     // need artwork of its own.
     image: "/assets/generated/bookkeeping.jpg",
@@ -35,6 +41,8 @@ export const categories = [
   {
     slug: "b2b",
     path: "/services/b2b",
+    closing:
+      "Each of these feeds the next: research sharpens the list, the list feeds the outreach, and the outreach fills the calendar.",
     // Reuses a representative service photograph — a category does not
     // need artwork of its own.
     image: "/assets/generated/market-research.jpg",
@@ -44,11 +52,13 @@ export const categories = [
     excerpt:
       "Finding the businesses worth talking to, and starting the conversation.",
     intro:
-      "Pipeline is a process, not a lucky month. We identify the companies that match your ideal customer, reach them through email, LinkedIn and content, and hand your team qualified conversations rather than raw lists.",
+      "Pipeline is a process, not a lucky month. Six services that work together: research to find who is worth approaching, lists built and verified against that, then email, LinkedIn and content to reach them — and appointments booked once someone is interested. Your team gets qualified conversations rather than raw lists.",
   },
   {
     slug: "digital",
     path: "/services/digital",
+    closing:
+      "Design, build and hosting are handled together, so there is no gap between whoever made the site and whoever keeps it running.",
     // Reuses a representative service photograph — a category does not
     // need artwork of its own.
     image: "/assets/generated/web-design-development.jpg",
@@ -207,16 +217,18 @@ export const services = [
     navLabel: "B2B Email Marketing",
     icon: "fa-envelope-o",
     image: "/assets/generated/email-marketing.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Outbound campaigns that reach the right inboxes and start real conversations.",
+      "Outbound campaigns built on a list you own, written to get replies.",
     intro:
-      "Campaigns are written for your offer and sent to lists built around your ideal customer, not bought in bulk. Deliverability is managed throughout, because a campaign that lands in spam is not a campaign.",
+      "Campaigns run against a list we help you build, segmented so each message is relevant to who receives it, and written to start a conversation rather than announce something. Every campaign is measured, and the sequence changes on what the numbers show.",
     includes: [
-      "Campaigns written and sequenced around your offer",
-      "Send lists built to your ideal customer profile",
-      "Deliverability managed so mail reaches the inbox",
-      "Open, reply and conversion reporting per campaign",
+      "Email lists built and maintained against your ideal customer profile",
+      "Outreach sequences and cold email templates written for reply rates",
+      "Campaigns that carry a prospect through the funnel, not a single send",
+      "Segmentation, so the message differs by who is reading it",
+      "Open, reply and conversion reporting for every campaign",
+      "Ongoing optimisation based on what the results show",
     ],
   },
   {
@@ -227,16 +239,18 @@ export const services = [
     navLabel: "B2B Appointment Setting",
     icon: "fa-calendar-check-o",
     image: "/assets/generated/appointment-setting.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Qualified meetings booked straight into your team's calendar.",
+      "Qualified meetings booked into your calendar, from first contact to confirmed slot.",
     intro:
-      "Prospects are contacted and qualified before anything reaches your calendar, so your team spends its time in conversations worth having. Notes come across with the booking.",
+      "We handle the whole path: identifying the right prospects, making contact by phone and email, qualifying interest, and dealing with the scheduling. Your team joins at the point where there is a conversation worth having.",
     includes: [
-      "Prospects contacted and qualified before a meeting is booked",
-      "Meetings placed directly into your calendar",
-      "No-shows and reschedules followed up",
-      "Background notes passed over so your team arrives prepared",
+      "Prospects identified and approached by phone and by email",
+      "Interest qualified before anything reaches your calendar",
+      "Meetings booked with decision-makers, logistics handled",
+      "Outreach shaped around your goals and target audience",
+      "Reschedules and no-shows followed up",
+      "Background notes passed over so your team arrives briefed",
     ],
   },
   {
@@ -247,16 +261,18 @@ export const services = [
     navLabel: "B2B Market Research",
     icon: "fa-pie-chart",
     image: "/assets/generated/market-research.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Know your market, your competitors, and where the next customers are.",
+      "Market, competitor and customer analysis, delivered as findings you can act on.",
     intro:
-      "Research that answers a decision rather than filling a deck. We size the market, look at how competitors are positioned and priced, and define your ideal customer from evidence instead of assumption.",
+      "Research scoped to a question you actually need answered. Primary work — surveys and interviews — is combined with published market data, then analysed into findings and recommendations rather than handed over as a pile of charts.",
     includes: [
-      "Market sizing and segment analysis",
-      "Competitor positioning and pricing review",
-      "Ideal customer profile defined from evidence",
-      "Findings delivered as a report you can act on",
+      "Market analysis: trends, opportunities and where the pressure is",
+      "Competitive landscape, and where you sit within it",
+      "Customer research into who buys and why",
+      "Segmentation, so your audience is grouped by something useful",
+      "Primary and secondary methods — surveys, interviews, published data",
+      "A written report with findings and clear recommendations",
     ],
   },
   {
@@ -267,16 +283,18 @@ export const services = [
     navLabel: "B2B Content Marketing",
     icon: "fa-pencil-square-o",
     image: "/assets/generated/content-marketing.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Content that earns attention from the businesses you want to sell to.",
+      "A content plan, the content itself, and a calendar that keeps it publishing.",
     intro:
-      "Content planned around what your buyers are actually searching for, written for a business audience, and published on a schedule that holds. Performance is tracked so the plan adapts rather than repeats.",
+      "It starts with the audience and what they search for, becomes a plan with goals attached, then gets written and published against a calendar. Articles, whitepapers and case studies that give a buyer a reason to take you seriously.",
     includes: [
-      "Content planned around what your buyers search for",
-      "Articles, case studies and collateral written for a B2B audience",
-      "A publishing schedule that stays consistent",
-      "Performance tracked so the plan adapts",
+      "Content strategy built on audience and competitor research",
+      "A content calendar with goals and measures attached to it",
+      "Articles, blogs, whitepapers and case studies written for a B2B reader",
+      "Content mapped to the buyer journey, from first awareness to shortlist",
+      "Distribution, not just publication",
+      "Performance reviewed so the plan moves with the evidence",
     ],
   },
   {
@@ -287,16 +305,18 @@ export const services = [
     navLabel: "LinkedIn Automation",
     icon: "fa-linkedin",
     image: "/assets/generated/linkedin-automation.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Consistent, personal LinkedIn outreach at a volume a team cannot sustain by hand.",
+      "Consistent, personal LinkedIn outreach at a volume nobody can keep up by hand.",
     intro:
-      "Targeted outreach to the people who match your buyer profile, with messages written to read personally rather than as an obvious template. Once a prospect replies, the conversation is handed to your team.",
+      "Targeted outreach to the people who match your buyer profile, with sequences written to read personally. Your profile is set up to support it, activity stays consistent week to week, and the moment someone replies the conversation belongs to a person again.",
     includes: [
-      "Targeted connection requests to your ideal buyers",
-      "Personalised message sequences, not generic templates",
-      "Profile activity kept consistent week to week",
-      "Conversations handed over as soon as a prospect responds",
+      "Targeting by industry, role and seniority against your buyer profile",
+      "Personalised connection and message sequences, not generic templates",
+      "Profile optimised so the outreach lands against something credible",
+      "Consistent activity week to week rather than in bursts",
+      "Conversations handed to your team as soon as a prospect replies",
+      "Performance monitored and the sequence adjusted on the results",
     ],
   },
   {
@@ -307,16 +327,18 @@ export const services = [
     navLabel: "Prospect & List Building",
     icon: "fa-list-ul",
     image: "/assets/generated/prospect-list-building.jpg",
-    sourced: false,
+    sourced: true,
     excerpt:
-      "Verified contact lists built to your criteria, ready to use.",
+      "Verified prospect lists, segmented and ready to load into your CRM.",
     intro:
-      "Contacts sourced against the criteria you set, then verified and cleaned before delivery — so your campaigns run against real people rather than bounced addresses.",
+      "Contacts sourced against criteria you set, verified before they reach you, and segmented so your messaging can differ by audience. Delivered structured for your CRM, so nothing has to be retyped before it can be used.",
     includes: [
-      "Contacts sourced against your criteria",
-      "Details verified before the list is delivered",
-      "Data cleaned and deduplicated",
-      "Delivered ready to load into your CRM or campaign tool",
+      "Prospects sourced against your ideal customer criteria",
+      "Details verified, and the data cleaned and deduplicated",
+      "Segmentation, so messaging can differ by audience",
+      "Structured for your CRM and ready to load",
+      "Nurture sequences set up against the list",
+      "Ongoing maintenance as the data ages",
     ],
   },
 

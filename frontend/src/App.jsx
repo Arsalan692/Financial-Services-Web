@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/common/ScrollToTop.jsx";
+import Preloader from "./components/layout/Preloader.jsx";
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
 import Contact from "./pages/Contact.jsx";
@@ -15,6 +16,7 @@ import NotFound from "./pages/NotFound.jsx";
 export default function App() {
   return (
     <>
+      <Preloader />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />

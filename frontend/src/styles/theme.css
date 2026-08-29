@@ -1476,3 +1476,86 @@ button:focus-visible {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* ---------- carousel arrows: no text selection -------------------------
+   Clicking the arrows quickly was being read as a drag-select and
+   highlighting the heading below. Buttons are not text, so they should
+   not participate in selection at all. */
+.fx-service-carousel .swiper-button-next,
+.fx-service-carousel .swiper-button-prev,
+.fx-select-button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ---------- preloader fade -------------------------------------------
+   The theme's #preloader styling already ships in style.css. All that is
+   missing is a graceful exit — the template simply hid it. */
+#preloader {
+  transition: opacity 0.4s ease;
+}
+
+#preloader.fx-preloader-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #preloader {
+    transition: none;
+  }
+}
+
+/* ---------- sticky navbar --------------------------------------------
+   The theme pins the nav with `.navbar.sticky` once the page scrolls past
+   its own height. Two adjustments are needed on top of that:
+
+   1. Its sticky rule sets `.navbar-collapse { width: 1140px }`, which is
+      more specific than our flex layout and would undo it. Restated here.
+   2. The nav is inside `.header-section`, which on inner pages sits above
+      a banner — the fixed nav must stay above it. */
+@media (min-width: 992px) {
+  .header-section .navbar.sticky .navbar-collapse {
+    width: auto;
+    margin: 0;
+  }
+
+  .header-section .navbar.sticky .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  /* Slightly shorter once pinned, so it takes less of the screen. */
+  .header-section .navbar.sticky .navbar-brand {
+    height: 76px;
+  }
+
+  .header-section .navbar.sticky .navbar-collapse .navbar-nav li a {
+    line-height: 76px;
+  }
+
+  .homePageFive .header-section .navbar.sticky .navbar-header .navbar-brand img,
+  .subPage .header-section .navbar.sticky .navbar-header .navbar-brand img {
+    padding: 0;
+    height: 34px;
+  }
+
+  /* The theme positions dropdowns at `top: 100px` to clear the taller
+     unpinned bar; once pinned the bar is 76px. */
+  .header-section .navbar.sticky .navbar-collapse .navbar-nav li .dropdown-menu,
+  .header-section
+    .navbar.sticky
+    .navbar-collapse
+    .navbar-nav
+    li.dropdown:hover
+    .dropdown-menu {
+    top: 76px;
+  }
+}
+
+/* The mobile menu button gets pinned alongside, as the template did. */
+.menu-toggle.sticky {
+  z-index: 999;
+}

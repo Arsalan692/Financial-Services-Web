@@ -60,7 +60,7 @@ export default function ServiceDetail() {
                   })),
                 ]}
                 ctaHeading="Not sure where to start?"
-                ctaBody={`Tell us what ${service.title.toLowerCase()} looks like in your business today and we will come back with what it would take to hand it over.`}
+                ctaBody={`Tell us what ${service.title} looks like in your business today and we will come back with what it would take to hand it over.`}
               />
             </div>
 
@@ -92,14 +92,10 @@ export default function ServiceDetail() {
                   </ul>
 
                   <p>
-                    Every engagement runs off the records you already keep, so
-                    there is no rebuilding your history before the work can
-                    start. If {service.navLabel.toLowerCase()} is one of
-                    several things you need covered, the rest of our{" "}
-                    <Link to={category.path}>
-                      {category.navLabel.toLowerCase()}
-                    </Link>{" "}
-                    work sits alongside it.
+                    {category.closing} If {service.navLabel} is one of several
+                    things you need covered, the rest of our{" "}
+                    <Link to={category.path}>{category.navLabel}</Link> work
+                    sits alongside it.
                   </p>
                 </div>
               </div>

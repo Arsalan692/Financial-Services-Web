@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+import useSticky from "../../hooks/useSticky.js";
 import navItems from "../../data/nav.js";
 import site from "../../config/site.js";
 
@@ -17,9 +19,26 @@ const isActive = (pathname, path) =>
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const navRef = useRef(null);
+  const { stuck, height } = useSticky(navRef);
 
   return (
-    <nav className="navbar navbar-inverse hidden-sm hidden-xs">
+    <>
+      {/* Going `position: fixed` takes the nav out of flow, so the page
+          below would jump up by its height. This holds the space. */}
+      {stuck && (
+        <div
+          className="fx-nav-spacer"
+          style={{ height }}
+          aria-hidden="true"
+        />
+      )}
+    <nav
+      className={`navbar navbar-inverse hidden-sm hidden-xs${
+        stuck ? " sticky" : ""
+      }`}
+      ref={navRef}
+    >
       <div className="container">
         <div className="navbar-header">
           <Link className="navbar-brand" to="/">
@@ -68,5 +87,6 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+    </>
   );
 }
