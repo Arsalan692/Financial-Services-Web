@@ -1,4 +1,4 @@
-"""Fintechly contact endpoint.
+"""Skyledger contact endpoint.
 
 The site is otherwise static. This exists for one job: accept an enquiry
 from the contact form, keep it, and pass it on by email.
@@ -45,7 +45,7 @@ SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
 MAIL_FROM = os.getenv("MAIL_FROM", SMTP_USER or "")
 MAIL_TO = os.getenv("MAIL_TO", "")
 
-app = FastAPI(title="Fintechly contact API", version="1.0.0")
+app = FastAPI(title="Skyledger contact API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,

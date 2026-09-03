@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   Fintechly — project layer.
+   Skyledger — project layer.
    Loaded AFTER the theme's style.css. Everything here is either a
    design token lifted out of the theme, or a deliberate override.
    Theme CSS itself stays unmodified so it remains diffable against
@@ -167,6 +167,11 @@ button:focus-visible {
     padding-bottom: 0;
   }
 
+  /* Height 46, not the 40 the earlier wordmark used: the Skyledger
+     lockup is a 3.99:1 box against that one's 5.37:1, so it is 26%
+     narrower at a given height and had gone visually light beside the
+     nav. 46px puts it at 183px wide, still inside the width budget. */
+
   /* The theme sizes the logo with `padding: 24px 0` on the <img> itself,
      under a `.homePageFive`/`.subPage` prefixed selector. Two things follow:
        1. box-sizing is border-box, so that 48px of padding consumed any
@@ -180,7 +185,7 @@ button:focus-visible {
   .subPage .header-section .navbar .navbar-header .navbar-brand img {
     flex: 0 0 auto;
     padding: 0;
-    height: 40px;
+    height: 46px;
     width: auto;
     max-width: none;
   }
@@ -243,7 +248,7 @@ button:focus-visible {
      keeps the 40px gap intact inside a 918px content box. */
   .homePageFive .header-section .navbar .navbar-header .navbar-brand img,
   .subPage .header-section .navbar .navbar-header .navbar-brand img {
-    height: 30px;
+    height: 34px;
   }
 
   .header-section .navbar .navbar-collapse .navbar-nav > li > a > .fa {

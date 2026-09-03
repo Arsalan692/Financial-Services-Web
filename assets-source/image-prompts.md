@@ -472,3 +472,32 @@ over-retouched skin.
 Photorealistic, 3:2 landscape, 1200x800. Dashboard content must be soft
 enough that no text or numbers are legible. No logos, no watermarks.
 ```
+
+## Logo (2026-09-04)
+
+Not generated from a prompt. The client supplied finished artwork —
+"SKYLEDGER CONSULTANTS", an isometric cube whose faces read as an S and an L
+with an arrow breaking out of the top — archived unmodified at
+`assets-source/brand/skyledger-logo-supplied.png`.
+
+It was traced to vector rather than cropped and embedded, so it stays sharp at
+any size and the footer variant is the same geometry recoloured. The artwork is
+two flat colours on an off-white card, so every pixel un-mats exactly against a
+known foreground; that gives a sub-pixel alpha map, and because every edge in an
+isometric mark is straight, Douglas-Peucker collapses each traced edge back to
+its endpoints. The whole mark is 174 points. Measured colours: navy #0b2946
+(the site's own navy is #092a48 — near enough to be indistinguishable) and teal
+#1d9593.
+
+The supplied lockup stacks the wordmark under the mark. At a 46px navbar height
+that leaves "CONSULTANTS" about four pixels tall, so the pieces were re-laid out
+horizontally, keeping the artwork's own proportions between the two type lines
+(the smaller is half the cap height and centred under the larger). The type is
+traced to outlines too, not set live: an SVG inside an <img> cannot load the
+webfont the rest of the page uses, so live text would fall back to a system font
+on any machine without it installed.
+
+Open question: the mark's teal #1d9593 is a different hue from the site accent
+#48c7ec, so the logo reads as its own colour beside the buttons and links.
+Left faithful to the artwork; swapping it is a find-and-replace of that hex in
+the two SVGs.

@@ -6,13 +6,16 @@
    ------------------------------------------------------------------ */
 
 export const site = {
-  // Confirmed 2026-08-29. Domain likely fintechlydigitals.com.
-  name: "Fintechly Digitals",
+  // Confirmed 2026-09-04, replacing the earlier "Fintechly Digitals".
+  name: "Skyledger Consultants",
   tagline: "Accounting, lead generation and web services",
 
-  /* Built as SVG rather than generated: sharp at any size, a kilobyte
-     each, and the footer variant is the same file recoloured. Set in
-     Poppins, which the site already loads. */
+  /* Traced to vector from the supplied artwork, which is archived at
+     assets-source/brand/skyledger-logo-supplied.png. The original stacks
+     the wordmark under the mark; these lay it out horizontally, because
+     stacked leaves "CONSULTANTS" about four pixels tall at navbar size.
+     Text is outlined rather than set live: an SVG inside an <img> cannot
+     load the webfont the rest of the page uses. */
   logo: "/assets/generated/logo.svg",
   logoFooter: "/assets/generated/logo-light.svg",
 
