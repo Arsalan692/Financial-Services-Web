@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>responsive harness</title>
+    <style>
+      body { margin: 0; font: 12px system-ui; background: #eef1f4; }
+      #stage { display: flex; gap: 14px; align-items: flex-start; padding: 14px; }
+      .cell { background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+      .cell h4 { margin: 0; padding: 4px 6px; background: #222; color: #fff; font-weight: 500; }
+      iframe { display: block; border: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="stage"></div>
+    <script>
+      /* Test rig, not part of the site. Lives outside `public/` so Vite
+         serves it in dev (the dev server serves the project root) but
+         never copies it into `dist/`. Open it at /dev/responsive.html.
+
+         Usage from the console or a driver:
+           await show('/about', [360, 768])   render side by side
+           still()                            freeze reveals for screenshots
+           await audit('/', [360, 768, 991])  report overflow per width
+ `resize_window` is ignored while the
+         browser window is maximised, so breakpoints are exercised by giving
+         an iframe an explicit width instead: media queries inside an iframe
+         resolve against the iframe's own box. Serving it from the dev server
+         keeps it same-origin, so the frame's layout can be measured directly
+         rather than only screenshotted. */
+
+      const stage = document.getElementById("stage");
+
+      function frame(route, width, height) {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        cell.innerHTML = "<h4>" + width + "px &middot; " + route + "</h4>";
+        const f = document.createElement("iframe");
+        f.style.width = width + "px";
+        f.style.height = (height || 900) + "px";
+        f.src = route;
+        cell.appendChild(f);
+        stage.appendChild(cell);
+        return f;
+      }
+
+      function settled(f) {
+        return new Promise((resolve) => {
+          f.addEventListener("load", () => {
+            // let the preloader clear, fonts land and reveals fire
+            setTimeout(resolve, 1400);
+          }, { once: true });
+        });
+      }
+
+      /* Which elements actually push the page wider than the viewport.
+         An element inside a deliberately scrollable or clipped ancestor is
+         not a bug, so those are walked out first. */
+      function overflow(doc) {
+        const vw = doc.documentElement.clientWidth;
+        const out = [];
+        /* Stop at <body>: the theme sets overflow-x:hidden there, which
+           masks the offender visually but still leaves the document
+           scrollable, so counting it as "clipped" would hide every real
+           cause. Any nearer ancestor that clips or scrolls is legitimate. */
+        const clipped = (el) => {
+          for (let p = el.parentElement; p && p !== doc.body; p = p.parentElement) {
+            const o = getComputedStyle(p).overflowX;
+            if (o === "hidden" || o === "clip" || o === "auto" || o === "scroll") return true;
+          }
+          return false;
+        };
+        for (const el of doc.body.querySelectorAll("*")) {
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) continue;
+          // Anything under a fixed ancestor sits outside the scroll area,
+          // so a drawer parked off-canvas -- and everything inside it --
+          // is not what is widening the page.
+          let fixed = false;
+          for (let p = el; p && p !== doc.body; p = p.parentElement) {
+            if (getComputedStyle(p).position === "fixed") { fixed = true; break; }
+          }
+          if (fixed) continue;
+          const over = Math.round(Math.max(r.right - vw, -r.left));
+          if (over > 1 && !clipped(el)) {
+            out.push({
+              sel: el.tagName.toLowerCase() +
+                   (el.id ? "#" + el.id : "") +
+                   (typeof el.className === "string" && el.className
+                      ? "." + el.className.trim().split(/\s+/).slice(0, 3).join(".")
+                      : ""),
+              over,
+              w: Math.round(r.width),
+              left: Math.round(r.left),
+            });
+          }
+        }
+        out.sort((a, b) => b.over - a.over);
+        // Keep the outermost offenders; children inherit their parent's push.
+        const seen = new Set();
+        return out.filter((o) => {
+          const k = o.sel.split(".")[0] + o.left + o.w;
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        }).slice(0, 8);
+      }
+
+      /* Text that has been squeezed to the point of breaking out of its box,
+         and controls too small to tap. */
+      function squeeze(doc) {
+        const vw = doc.documentElement.clientWidth;
+        const notes = [];
+        for (const el of doc.body.querySelectorAll("h1,h2,h3,h4,h5,p,a,span,li,button,input,textarea,select,label")) {
+          const r = el.getBoundingClientRect();
+          if (r.width < 1 || r.height < 1) continue;
+          if (el.scrollWidth > el.clientWidth + 2 && getComputedStyle(el).overflowX === "visible") {
+            notes.push({ kind: "text-overflow", sel: el.tagName.toLowerCase() + "." +
+              (typeof el.className === "string" ? el.className.trim().split(/\s+/)[0] : ""),
+              scrollW: el.scrollWidth, clientW: el.clientWidth });
+          }
+          if (/^(a|button|input|select|textarea)$/i.test(el.tagName) && vw < 768) {
+            if (r.height > 0 && r.height < 30 && r.width > 0) {
+              notes.push({ kind: "small-target", sel: el.tagName.toLowerCase() + "." +
+                (typeof el.className === "string" ? el.className.trim().split(/\s+/)[0] : ""),
+                h: Math.round(r.height), text: (el.textContent || "").trim().slice(0, 24) });
+            }
+          }
+        }
+        const dedup = new Map();
+        for (const n of notes) {
+          const k = n.kind + n.sel;
+          if (!dedup.has(k)) dedup.set(k, { ...n, count: 1 });
+          else dedup.get(k).count++;
+        }
+        return [...dedup.values()].slice(0, 10);
+      }
+
+      window.audit = async function (route, widths) {
+        const results = [];
+        for (const width of widths) {
+          stage.innerHTML = "";
+          const f = frame(route, width, 900);
+          await settled(f);
+          const doc = f.contentDocument;
+          const de = doc.documentElement;
+          const before = overflow(doc);
+          // Scroll the whole frame so every IntersectionObserver reveal
+          // fires, then measure again: the settled layout and the
+          // pre-reveal layout break in different ways.
+          const H = doc.body.scrollHeight;
+          for (let y = 0; y < H; y += 400) {
+            f.contentWindow.scrollTo(0, y);
+            await new Promise((r) => setTimeout(r, 45));
+          }
+          f.contentWindow.scrollTo(0, 0);
+          await new Promise((r) => setTimeout(r, 700));
+          results.push({
+            beforeReveal: before,
+            route,
+            width,
+            scrollW: de.scrollWidth,
+            clientW: de.clientWidth,
+            hScroll: de.scrollWidth > de.clientWidth + 1,
+            docH: Math.round(doc.body.scrollHeight),
+            navVisible: !!doc.querySelector(".navbar:not(.hidden-sm)") &&
+              (doc.querySelector("nav.navbar") ? getComputedStyle(doc.querySelector("nav.navbar")).display : "none"),
+            burger: doc.querySelector(".menu-toggle")
+              ? getComputedStyle(doc.querySelector(".menu-toggle")).display
+              : "absent",
+            overflow: overflow(doc),
+            squeeze: squeeze(doc),
+          });
+        }
+        return results;
+      };
+
+      /* Force every reveal to its finished state. Scroll-triggered
+         animations make screenshots a coin toss -- half the page is
+         mid-transition -- and layout is what is being judged here, not
+         motion. Same end state `prefers-reduced-motion` produces. */
+      window.still = function () {
+        for (const f of document.querySelectorAll("iframe")) {
+          const d = f.contentDocument;
+          if (d.getElementById("fx-still")) continue;
+          const st = d.createElement("style");
+          st.id = "fx-still";
+          st.textContent =
+            ".fx-reveal,.fx-reveal-left,.fx-reveal-right,.fx-anim{" +
+            "opacity:1!important;transform:none!important;" +
+            "animation:none!important;transition:none!important}";
+          d.head.appendChild(st);
+        }
+        return "still";
+      };
+
+      // Render a set of widths side by side for screenshotting.
+      window.show = async function (route, widths, height) {
+        stage.innerHTML = "";
+        const fs = widths.map((w) => frame(route, w, height || 900));
+        await Promise.all(fs.map(settled));
+        return "shown";
+      };
+    </script>
+  </body>
+</html>

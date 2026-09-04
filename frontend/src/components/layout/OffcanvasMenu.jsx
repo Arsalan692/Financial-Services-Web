@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import navItems from "../../data/nav.js";
+import site from "../../config/site.js";
 
 /* Mobile navigation — the theme's off-canvas drawer, rebuilt in React.
 
@@ -48,22 +49,47 @@ export default function OffcanvasMenu() {
 
   return (
     <>
-      <span
-        className="menu-toggle navbar visible-xs visible-sm"
-        onClick={openMenu}
-        role="button"
-        tabIndex={0}
-        aria-label="Open menu"
-        aria-expanded={open}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            openMenu();
-          }
-        }}
-      >
-        <i className="fa fa-bars" aria-hidden="true"></i>
-      </span>
+      {/* The template leaves mobile with nothing but a burger floating over
+          the hero — its only branding is a background image that appears on
+          the toggle once it goes sticky. This is a real bar instead: logo
+          left, burger right, stuck to the top like the desktop nav.
+
+          Visibility is a media query in theme.css rather than Bootstrap's
+          `visible-xs visible-sm`, because those set `display: block`
+          !important and would break the flex layout. */}
+      <div className="fx-mobile-bar">
+        <Link to="/" className="fx-mobile-bar-brand" onClick={closeMenu}>
+          <img src={site.logo} alt={site.name} />
+        </Link>
+
+        <span
+          className="menu-toggle"
+          onClick={openMenu}
+          role="button"
+          tabIndex={0}
+          aria-label="Open menu"
+          aria-expanded={open}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              openMenu();
+            }
+          }}
+        >
+          <i className="fa fa-bars" aria-hidden="true"></i>
+        </span>
+      </div>
+
+      {/* Tapping away from an open drawer is how every phone menu closes;
+          the template offered only the small ×. Rendered only while open so
+          it never sits over the page swallowing taps. */}
+      {open && (
+        <div
+          className="fx-menu-scrim"
+          onClick={closeMenu}
+          aria-hidden="true"
+        />
+      )}
 
       <div
         id="offcanvas-menu"

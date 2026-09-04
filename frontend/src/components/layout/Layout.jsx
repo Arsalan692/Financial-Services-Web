@@ -18,6 +18,16 @@ export default function Layout({ children, bodyClass, cta = true }) {
       {/* The theme's `topper` contact bar sat above the nav. Removed at the
           client's request — the contact details still live in the footer
           and on the Contact page. */}
+      {/* Below 992px the desktop nav is hidden, logo and all, so this
+          carries the mobile header bar as well as the drawer.
+
+          It sits outside <header> deliberately. A sticky element only
+          sticks within its own parent's box, and `.header-section` is no
+          taller than the bar itself — nested there, the bar scrolled away
+          immediately. As a child of the root it sticks for the whole
+          page. */}
+      <OffcanvasMenu />
+
       <header className="header-section">
         <Navbar />
       </header>
@@ -26,7 +36,6 @@ export default function Layout({ children, bodyClass, cta = true }) {
 
       {cta && <CtaBand />}
       <Footer />
-      <OffcanvasMenu />
     </>
   );
 }
