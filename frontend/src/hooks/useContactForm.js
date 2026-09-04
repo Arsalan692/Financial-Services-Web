@@ -17,6 +17,27 @@ import site from "../config/site.js";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+/* Where the form posts.
+
+   In development, nothing is set and it goes to /api/contact, which Vite
+   proxies to the FastAPI app — the backend still owns the local flow.
+
+   In production it goes to a hosted form service instead. The FastAPI
+   endpoint records each enquiry to disk before it tries to email, so a
+   mail failure never loses a lead; that guarantee needs an always-on
+   process and a real filesystem, and free hosting gives neither — the
+   container sleeps and the disk is wiped. Rather than deploy a backend
+   whose main safety property does not hold, the deployed site posts to a
+   service that owns delivery and keeps its own record.
+
+   VITE_* values are inlined into the bundle at build time, so the access
+   key is public. That is how these services are designed to work — it
+   identifies a form, it does not authorise anything — but it is read
+   from the environment rather than committed so it can be rotated
+   without a code change. */
+const ENDPOINT = import.meta.env.VITE_FORM_ENDPOINT || site.contactEndpoint;
+const ACCESS_KEY = import.meta.env.VITE_FORM_ACCESS_KEY;
+
 export default function useContactForm(initial) {
   const [values, setValues] = useState(initial);
   const [errors, setErrors] = useState({});
@@ -60,15 +81,35 @@ export default function useContactForm(initial) {
 
     setStatus("sending");
     try {
-      const response = await fetch(site.contactEndpoint, {
+      /* The form service takes the same fields plus its own envelope.
+         `replyto` makes a reply in the inbox go to the enquirer rather
+         than to the service, which is the whole point of receiving it. */
+      const payload = ACCESS_KEY
+        ? {
+            access_key: ACCESS_KEY,
+            subject: `Website enquiry — ${values.name}`,
+            from_name: site.name,
+            replyto: values.email,
+            ...values,
+            location: values.location || "—",
+            service: values.service || "—",
+          }
+        : values;
+
+      const response = await fetch(ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        const detail = await response.json().catch(() => null);
-        throw new Error(detail?.detail ?? `Request failed (${response.status})`);
+      const body = await response.json().catch(() => null);
+
+      // The service answers 200 with `success: false` for a rejected
+      // key, so an ok status is not on its own proof of delivery.
+      if (!response.ok || body?.success === false) {
+        throw new Error(
+          body?.detail ?? body?.message ?? `Request failed (${response.status})`,
+        );
       }
 
       setStatus("sent");

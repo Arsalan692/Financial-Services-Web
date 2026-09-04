@@ -1,0 +1,8 @@
+# The site is a single-page app: React Router owns all 21 routes, and the
+# host knows about none of them. Without this, /about and every service
+# page 404 on a direct visit or a refresh — only the homepage would work.
+#
+# Read by Cloudflare Pages and Netlify. Serve index.html for anything the
+# build did not produce as a real file, with a 200 rather than a redirect
+# so the URL the visitor typed is the URL they keep.
+/*    /index.html   200
