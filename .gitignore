@@ -22,8 +22,12 @@ theme-reference/
 
 frontend/public/assets/images/
 frontend/public/assets/video/
-frontend/public/assets/fonts/
-frontend/public/assets/bootstrap/fonts/
+
+# NOTE: the two font directories are deliberately NOT ignored. Font
+# Awesome's faces are SIL OFL 1.1 and Glyphicons ship under Bootstrap's
+# MIT licence, so unlike the template's photography they are ours to
+# redistribute — and without them every icon on a deployed build renders
+# as an empty box, because the host only ever sees what is committed.
 
 # NOTE: assets/css/ is deliberately NOT ignored. style.css is the design
 # system the whole port is built against — text, diffable, and reviewed
