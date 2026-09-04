@@ -20,8 +20,17 @@ dist-ssr/
 # ---------------------------------------------------------------
 theme-reference/
 
-frontend/public/assets/images/
 frontend/public/assets/video/
+
+# The template's images ARE committed, at the owner's explicit direction
+# (2026-09-04), so that a host building from this repo produces the site
+# as designed. They are the template's photography and backgrounds, not
+# ours; the licence question that they raise is the owner's call and was
+# made knowingly. Replacing them with our own artwork is still the
+# intended end state -- see assets-source/image-prompts.md.
+#
+# video/ stays out: the template's video section was cut, and nothing
+# references the file.
 
 # NOTE: the two font directories are deliberately NOT ignored. Font
 # Awesome's faces are SIL OFL 1.1 and Glyphicons ship under Bootstrap's
