@@ -1,0 +1,23 @@
+{
+  // Cloudflare's git flow now creates a Worker rather than a Pages
+  // project, and `wrangler deploy` needs this file to know what to ship.
+  // It sits in `frontend/` because that is the configured root directory,
+  // which is also where `npm run build` writes `dist/`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "financial-services-web",
+  "compatibility_date": "2026-09-04",
+
+  "assets": {
+    "directory": "./dist",
+
+    // React Router owns 21 routes the edge knows nothing about, so any
+    // path that is not a real file in dist/ has to return index.html and
+    // let the router sort it out. Without this, a direct visit to
+    // /about or a refresh on a service page 404s.
+    //
+    // This is the Workers equivalent of the `_redirects` file in
+    // public/, which is what Pages and Netlify read instead. Both are
+    // kept: whichever host this ends up on, the fallback is there.
+    "not_found_handling": "single-page-application"
+  }
+}
