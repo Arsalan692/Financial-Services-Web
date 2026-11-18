@@ -21,8 +21,8 @@ export const site = {
 
   contact: {
     // Real details, supplied 2026-11-18.
-    phone: "(518) 974-6202",
-    phoneHref: "tel:+15189746202",
+    phone: "(518) 974-6202 ext. 800",
+    phoneHref: "tel:+15189746202,800",
     email: "info@skyledgerconsultants.com",
     address: "Malvern, PA",
     hours: "Mon–Fri: 9 am – 6 pm",
@@ -38,16 +38,14 @@ export const site = {
     },
   ],
 
-  /* Headline figures on the About page.
-     ⚠ The first two are STAND-IN NUMBERS, set at the client's request so
-     the section reads properly during review. They are factual claims
-     about the business and MUST be replaced with real figures, or the
-     section removed, before this site goes live. */
+  /* Headline figures on the About page. Supplied by the client
+     2026-11-18. "Areas of expertise" is their figure, not a count of
+     the categories in services.js (which has three). */
   stats: [
-    { icon: "1.png", value: 120, suffix: "+", label: "Clients served", placeholder: false },
-    { icon: "2.png", value: 8, suffix: "+", label: "Years in business", placeholder: false },
+    { icon: "1.png", value: 50, suffix: "+", label: "Clients served", placeholder: false },
+    { icon: "2.png", value: 5, suffix: "+", label: "Years in business", placeholder: false },
     { icon: "3.png", value: 14, suffix: "", label: "Services offered", placeholder: false },
-    { icon: "4.png", value: 3, suffix: "", label: "Areas of expertise", placeholder: false },
+    { icon: "4.png", value: 5, suffix: "", label: "Areas of expertise", placeholder: false },
   ],
 
   // Contact form posts here in phase 7. Until the FastAPI backend
