@@ -62,7 +62,12 @@ export default function Footer() {
                 <ul className="social-icon">
                   {site.social.map((s) => (
                     <li key={s.label}>
-                      <a href={s.href} aria-label={s.label}>
+                      <a
+                        href={s.href}
+                        aria-label={s.label}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <i className={`fa ${s.icon}`} aria-hidden="true"></i>
                       </a>
                     </li>

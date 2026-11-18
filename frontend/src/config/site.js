@@ -20,19 +20,22 @@ export const site = {
   logoFooter: "/assets/generated/logo-light.svg",
 
   contact: {
-    phone: "+1 (555) 010 0100",
-    phoneHref: "tel:+15550100100",
-    email: "hello@example.com",
-    // Keep this roughly the length of the theme's own "251 S Olive St,
-    // Los Angeles" — the top bar gives it one line before it wraps.
-    address: "100 Example St, Springfield",
+    // Real details, supplied 2026-11-18.
+    phone: "+1 (518) 974-6202",
+    phoneHref: "tel:+15189746202",
+    email: "info@skyledgerconsultants.com",
+    address: "Malvern, PA",
     hours: "Mon–Fri: 9 am – 6 pm",
   },
 
+  // Only profiles that exist. Facebook and X were placeholder links to
+  // "#"; add them back here if the company opens those accounts.
   social: [
-    { label: "LinkedIn", icon: "fa-linkedin", href: "#" },
-    { label: "Facebook", icon: "fa-facebook", href: "#" },
-    { label: "X", icon: "fa-twitter", href: "#" },
+    {
+      label: "LinkedIn",
+      icon: "fa-linkedin",
+      href: "https://www.linkedin.com/company/skyledger-consultants/",
+    },
   ],
 
   /* Headline figures on the About page.
