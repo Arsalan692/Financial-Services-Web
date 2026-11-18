@@ -21,7 +21,7 @@ export const site = {
 
   contact: {
     // Real details, supplied 2026-11-18.
-    phone: "+1 (518) 974-6202",
+    phone: "(518) 974-6202",
     phoneHref: "tel:+15189746202",
     email: "info@skyledgerconsultants.com",
     address: "Malvern, PA",
