@@ -5,10 +5,11 @@ import site from "../../config/site.js";
 
 /* Mobile navigation — the theme's off-canvas drawer, rebuilt in React.
 
-   The template drove this with jQuery `slideToggle`. Here the panel is
-   open when `#offcanvas-menu` carries `.toggled`, and a submenu is open
-   when its <ul> carries `.fx-open` (theme.css supplies the matching rule,
-   since the theme's own CSS hides every submenu with display:none).
+   The panel is open when `#offcanvas-menu` carries `.toggled` (the theme's
+   own slide-in rule). Everything inside it is the project's own `fx-drawer`
+   design in theme.css — navy, Poppins throughout, chevrons aligned right,
+   submenus that animate open, and a contact block at the foot — rather
+   than the template's grey Montserrat list.
 
    Behaviour the original did not have: the drawer closes on navigation
    and on Escape, and page scroll is locked while it is open. */
@@ -93,32 +94,36 @@ export default function OffcanvasMenu() {
 
       <div
         id="offcanvas-menu"
-        className={`visible-xs visible-sm${open ? " toggled" : ""}`}
+        className={`visible-xs visible-sm fx-drawer${open ? " toggled" : ""}`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu"
+        inert={!open}
       >
-        <span
-          className="close-menu"
-          onClick={closeMenu}
-          role="button"
-          tabIndex={open ? 0 : -1}
-          aria-label="Close menu"
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              e.preventDefault();
-              closeMenu();
-            }
-          }}
-        >
-          <i className="fa fa-times" aria-hidden="true"></i>
-        </span>
+        <div className="fx-drawer-head">
+          <Link to="/" className="fx-drawer-brand" onClick={closeMenu}>
+            <img src={site.logoFooter} alt={site.name} />
+          </Link>
+          <button
+            type="button"
+            className="fx-drawer-close"
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <i className="fa fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
 
-        <ul className="menu-wrapper">
+        <ul className="fx-drawer-nav">
           {navItems.map((item) => {
             if (!item.children) {
+              const active = pathname === item.path;
               return (
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    className={pathname === item.path ? "active" : undefined}
+                    className={`fx-drawer-link${active ? " is-active" : ""}`}
+                    aria-current={active ? "page" : undefined}
                   >
                     {item.label}
                   </Link>
@@ -127,6 +132,7 @@ export default function OffcanvasMenu() {
             }
 
             const isExpanded = expanded === item.path;
+            const inBranch = pathname.startsWith(item.path);
 
             return (
               <li key={item.path}>
@@ -134,48 +140,64 @@ export default function OffcanvasMenu() {
                     otherwise its children would be unreachable on touch. */}
                 <button
                   type="button"
-                  className={`dropmenu${
-                    pathname.startsWith(item.path) ? " active" : ""
-                  }`}
+                  className={`fx-drawer-link fx-drawer-parent${
+                    inBranch ? " is-active" : ""
+                  }${isExpanded ? " is-open" : ""}`}
                   aria-expanded={isExpanded}
                   onClick={() => setExpanded(isExpanded ? null : item.path)}
                 >
-                  {item.label}{" "}
-                  <i
-                    className={`fa fa-angle-${isExpanded ? "up" : "down"}`}
-                    aria-hidden="true"
-                  ></i>
+                  <span>{item.label}</span>
+                  <i className="fa fa-angle-down" aria-hidden="true"></i>
                 </button>
 
-                <ul
-                  className={`dropDown sub-menu${isExpanded ? " fx-open" : ""}`}
+                {/* Always mounted so it can animate open; `inert` keeps
+                    the collapsed links out of the tab order. */}
+                <div
+                  className={`fx-drawer-sub${isExpanded ? " is-open" : ""}`}
+                  inert={!isExpanded}
                 >
-                  {/* The parent's own page still needs to be reachable. */}
-                  <li>
-                    <Link
-                      to={item.path}
-                      className={pathname === item.path ? "active" : undefined}
-                    >
-                      All {item.label}
-                    </Link>
-                  </li>
-                  {item.children.map((child) => (
-                    <li key={child.path}>
+                  <ul>
+                    {/* The parent's own page still needs to be reachable. */}
+                    <li>
                       <Link
-                        to={child.path}
-                        className={
-                          pathname === child.path ? "active" : undefined
-                        }
+                        to={item.path}
+                        className={pathname === item.path ? "is-active" : undefined}
                       >
-                        {child.label}
+                        All {item.label}
                       </Link>
                     </li>
-                  ))}
-                </ul>
+                    {item.children.map((child) => (
+                      <li key={child.path}>
+                        <Link
+                          to={child.path}
+                          className={
+                            pathname === child.path ? "is-active" : undefined
+                          }
+                        >
+                          {child.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
             );
           })}
         </ul>
+
+        <div className="fx-drawer-foot">
+          <Link to="/contact" className="fx-drawer-cta">
+            Talk to us
+          </Link>
+          <a href={site.contact.phoneHref} className="fx-drawer-contact">
+            <i className="fa fa-phone" aria-hidden="true"></i>
+            {site.contact.phone}
+          </a>
+          <a href={`mailto:${site.contact.email}`} className="fx-drawer-contact">
+            <i className="fa fa-envelope-o" aria-hidden="true"></i>
+            {site.contact.email}
+          </a>
+        </div>
       </div>
     </>
   );

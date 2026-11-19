@@ -98,34 +98,238 @@ button:focus-visible {
 }
 
 /* ---------- off-canvas mobile menu ----------------------------------
-   The theme hides every submenu with
-   `#offcanvas-menu .menu-wrapper li ul { display: none; }` and used
-   jQuery slideToggle to reveal them. React toggles .fx-open instead, so
-   this rule needs at least equal specificity to win. */
-#offcanvas-menu .menu-wrapper li ul.fx-open {
-  display: block;
+   The drawer keeps the theme's `#offcanvas-menu` / `.toggled` slide-in
+   mechanics; everything inside is the project's own `fx-drawer` design.
+   The template's version was a grey (#313131) Montserrat list whose
+   chevrons wrapped under long labels and whose close button hung off the
+   panel edge. Selectors carry the #id so they outrank offcanvas-menu.css. */
+#offcanvas-menu.fx-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(330px, 86vw);
+  background: linear-gradient(180deg, var(--fx-navy) 0%, var(--fx-navy-deep) 100%);
+  box-shadow: -18px 0 40px rgba(3, 22, 51, 0.35);
+  transform: translateX(105%);
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  font-family: var(--fx-font);
+  --fx-accent: var(--fx-accent-on-dark);
 }
 
-/* Parent items in the mobile menu are <button>, not <a>: tapping one has
-   to expand the submenu rather than navigate, or its children are
-   unreachable on touch. Give it the anchor styling the theme expects. */
-#offcanvas-menu .menu-wrapper li button.dropmenu {
-  font-family: inherit;
+#offcanvas-menu.fx-drawer.toggled {
+  transform: translateX(0);
+}
+
+.fx-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 18px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fx-drawer-brand {
+  line-height: 0;
+}
+
+.fx-drawer-brand img {
+  height: 34px;
+  width: auto;
+}
+
+.fx-drawer-close {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: transparent;
+  color: #ffffff;
+  font-size: 17px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.fx-drawer-close:hover {
+  background: var(--fx-accent);
+  border-color: var(--fx-accent);
+}
+
+.fx-drawer-nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  margin: 0;
+  padding: 10px 0;
+  list-style: none;
+}
+
+.fx-drawer-nav > li {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Links and the parent <button>s share one look, so every row matches. */
+.fx-drawer-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 15px 24px;
+  border: 0;
+  background: none;
+  font-family: var(--fx-font);
   font-size: 16px;
   font-weight: 500;
-  color: #b7becd;
-  border: none;
-  border-bottom: 1px solid #b7becd;
-  padding: 10px 40px;
-  display: block;
-  width: 100%;
+  line-height: 1.35;
   text-align: left;
-  background: none;
+  color: #e8eef5;
   cursor: pointer;
+  transition: color 0.2s, background-color 0.2s;
 }
 
-#offcanvas-menu .menu-wrapper li button.dropmenu.active {
+.fx-drawer-link:hover,
+.fx-drawer-link:focus {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+  text-decoration: none;
+}
+
+/* Current page: accent text plus a bar on the leading edge. */
+.fx-drawer-link.is-active {
   color: var(--fx-accent);
+}
+
+.fx-drawer-link.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--fx-accent);
+}
+
+.fx-drawer-parent .fa {
+  flex: 0 0 auto;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.55);
+  transition: transform 0.3s ease, color 0.2s;
+}
+
+.fx-drawer-parent.is-open .fa {
+  transform: rotate(180deg);
+  color: var(--fx-accent);
+}
+
+/* Submenu opens with the 0fr -> 1fr grid trick: it animates to the
+   content's real height without a hard-coded max-height. */
+.fx-drawer-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.32s ease;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.fx-drawer-sub.is-open {
+  grid-template-rows: 1fr;
+}
+
+.fx-drawer-sub > ul {
+  min-height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fx-drawer-sub li:first-child {
+  padding-top: 6px;
+}
+
+.fx-drawer-sub li:last-child {
+  padding-bottom: 8px;
+}
+
+.fx-drawer-sub a {
+  display: block;
+  padding: 10px 24px 10px 40px;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: #b7c4d3;
+  transition: color 0.2s;
+}
+
+.fx-drawer-sub a:hover,
+.fx-drawer-sub a:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.fx-drawer-sub a.is-active {
+  color: var(--fx-accent);
+  font-weight: 500;
+}
+
+.fx-drawer-foot {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 24px 26px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Its own button rather than .btn-primary: the theme's sweep fills that
+   with navy on hover, which vanishes on this navy panel. */
+.fx-drawer-cta {
+  display: block;
+  padding: 13px 20px;
+  border-radius: 6px;
+  background: var(--fx-accent);
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  color: #ffffff;
+  transition: filter 0.2s;
+}
+
+.fx-drawer-cta:hover,
+.fx-drawer-cta:focus {
+  color: #ffffff;
+  text-decoration: none;
+  filter: brightness(1.08);
+}
+
+.fx-drawer-contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #b7c4d3;
+  word-break: break-word;
+}
+
+.fx-drawer-contact:hover,
+.fx-drawer-contact:focus {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.fx-drawer-contact .fa {
+  width: 16px;
+  text-align: center;
+  color: var(--fx-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #offcanvas-menu.fx-drawer,
+  .fx-drawer-sub,
+  .fx-drawer-parent .fa {
+    transition: none;
+  }
 }
 
 /* ---------- navbar layout --------------------------------------------
@@ -1621,7 +1825,7 @@ button:focus-visible {
   }
 
   #offcanvas-menu.visible-xs.visible-sm {
-    display: block !important;
+    display: flex !important;
   }
 
   .fx-mobile-bar {
@@ -1667,7 +1871,9 @@ button:focus-visible {
 
   .fx-mobile-bar .menu-toggle i {
     display: block;
-    border-radius: 4px;
+    border-radius: 6px;
+    background-color: var(--fx-navy);
+    font-size: 21px;
   }
 
   /* The drawer must clear the bar it is opened from. */
