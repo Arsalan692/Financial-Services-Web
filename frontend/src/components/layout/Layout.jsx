@@ -3,6 +3,7 @@ import OffcanvasMenu from "./OffcanvasMenu.jsx";
 import Footer from "./Footer.jsx";
 import CtaBand from "../common/CtaBand.jsx";
 import useBodyClass from "../../hooks/useBodyClass.js";
+import useSeo from "../../hooks/useSeo.js";
 
 /* Wraps every page: header, content, CTA band, footer.
 
@@ -12,6 +13,7 @@ import useBodyClass from "../../hooks/useBodyClass.js";
 
 export default function Layout({ children, bodyClass, cta = true }) {
   useBodyClass(bodyClass);
+  useSeo();
 
   return (
     <>

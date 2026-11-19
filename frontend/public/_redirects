@@ -1,8 +1,13 @@
-# The site is a single-page app: React Router owns all 21 routes, and the
-# host knows about none of them. Without this, /about and every service
-# page 404 on a direct visit or a refresh — only the homepage would work.
+# Intentionally no rules.
 #
-# Read by Cloudflare Pages and Netlify. Serve index.html for anything the
-# build did not produce as a real file, with a 200 rather than a redirect
-# so the URL the visitor typed is the URL they keep.
-/*    /index.html   200
+# This used to hold the SPA catch-all `/*  /index.html  200`. It is gone
+# because the build now writes a real HTML file per route (about.html,
+# services/b2b/email-marketing.html, ...) carrying that page's title,
+# description and link-preview tags, and a catch-all would serve every
+# visitor the homepage's file instead.
+#
+# The SPA fallback for anything else is still in place natively:
+#   - Workers (current host): `not_found_handling: single-page-application`
+#     in wrangler.jsonc.
+#   - Pages: with no top-level 404.html, Pages treats the project as an
+#     SPA and serves index.html for unmatched paths.
