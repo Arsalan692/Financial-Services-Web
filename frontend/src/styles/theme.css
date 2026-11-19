@@ -226,10 +226,12 @@ button:focus-visible {
      content box, leaving the logo almost touching "HOME". One point of
      type buys back ~58px, which is invisible in the label and very
      visible in the gap. */
+  /* Six items since "Our Services" left the menu (2026-11-19), which
+     freed ~110px: back to the theme's 14px type and roomier padding. */
   .header-section .navbar .navbar-collapse .navbar-nav > li > a {
-    padding-left: 6px;
-    padding-right: 6px;
-    font-size: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 14px;
   }
 
   /* The caret sat flush against the label once the link padding came
@@ -263,8 +265,8 @@ button:focus-visible {
    The theme already drops the logo to 180px at this breakpoint. */
 @media (min-width: 992px) and (max-width: 1199px) {
   .header-section .navbar .navbar-collapse .navbar-nav > li > a {
-    padding-left: 2px;
-    padding-right: 2px;
+    padding-left: 6px;
+    padding-right: 6px;
     font-size: 11px;
   }
 
