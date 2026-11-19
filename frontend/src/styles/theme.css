@@ -1790,3 +1790,45 @@ button:focus-visible {
     width: 100%;
   }
 }
+
+/* ---------- fixed backgrounds on touch devices -----------------------
+   The theme gives these bands `background-attachment: fixed` for a
+   parallax effect. iOS Safari does not support it and, combined with
+   `background-size: cover`, sizes the photo against the whole page —
+   it shows hugely zoomed and blurry. Android repaints it on every scroll
+   frame. On touch screens the bands simply scroll with the page;
+   desktops keep the parallax. */
+@media (hover: none) {
+  .subPage .header-title,
+  .secure-section,
+  .counting-section {
+    background-attachment: scroll;
+  }
+}
+
+/* ---------- homepage service grid ------------------------------------
+   Six cards in one flex-wrapping row (see ServiceGrid.jsx). The row gap
+   reproduces the theme's `.first-row` spacing at each breakpoint. The
+   Bootstrap clearfix pseudo-elements would become flex items, so they go. */
+.service-section .fx-service-grid {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 45px;
+}
+
+.service-section .fx-service-grid::before,
+.service-section .fx-service-grid::after {
+  display: none;
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .service-section .fx-service-grid {
+    row-gap: 25px;
+  }
+}
+
+@media (max-width: 991px) {
+  .service-section .fx-service-grid {
+    row-gap: 0;
+  }
+}

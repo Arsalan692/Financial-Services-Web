@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { services } from "../../data/services.js";
 
-/* The theme's `service-section`: six cards in two rows of three.
+/* The theme's `service-section`: six cards, three across on desktop and
+   two across on tablets.
 
    The template repeated cards with `visible-sm` duplicates to pad its
    tablet layout; those are dropped, since the Bootstrap grid already
@@ -32,14 +33,11 @@ export default function ServiceGrid() {
           <div className="border"></div>
         </div>
 
-        <div className="row first-row">
-          {featured.slice(0, 3).map((service) => (
-            <ServiceCard key={service.slug} service={service} />
-          ))}
-        </div>
-
-        <div className="row">
-          {featured.slice(3).map((service) => (
+        {/* One wrapping row, not the template's two rows of three: on
+            tablets (col-sm-6) each row of three broke into 2 + 1 and left
+            a hole beside the third card. */}
+        <div className="row fx-service-grid">
+          {featured.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}
         </div>
