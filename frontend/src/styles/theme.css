@@ -8,7 +8,11 @@
 
 :root {
   /* Palette, extracted from theme-reference/assets/css/style.css */
-  --fx-accent: #48c7ec; /* 185 uses — primary brand colour */
+  /* Brand accent = the logo's teal. The theme's own ~190 accent declarations
+     are re-pointed at this variable by accent.css (generated). */
+  --fx-accent: #1d9593;
+  /* The same teal lifted for navy surfaces, where #1d9593 reads muddy. */
+  --fx-accent-on-dark: #2bb3a3;
   --fx-navy: #092a48; /* top contact bar */
   --fx-navy-deep: #0d1d36; /* footer */
   --fx-navy-darkest: #031633;
@@ -19,6 +23,14 @@
 
   /* Type — the theme ships Poppins 300/400/500/600/700 and nothing else */
   --fx-font: "Poppins", sans-serif;
+}
+
+/* Navy surfaces take the lifted teal. */
+.footer-section,
+.counting-section,
+.fx-getting-started,
+.contact-section .contact-left-bar {
+  --fx-accent: var(--fx-accent-on-dark);
 }
 
 /* Scroll reveal — the replacement for WOW.js. useReveal() adds
