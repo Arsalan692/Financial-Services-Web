@@ -108,15 +108,27 @@ button:focus-visible {
   flex-direction: column;
   width: min(330px, 86vw);
   background: linear-gradient(180deg, var(--fx-navy) 0%, var(--fx-navy-deep) 100%);
-  box-shadow: -18px 0 40px rgba(3, 22, 51, 0.35);
   transform: translateX(105%);
-  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Closed: no shadow and hidden once the slide-out finishes. A shadow on
+     the parked panel bled ~60px back onto the right edge of every page. */
+  box-shadow: none;
+  visibility: hidden;
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.38s ease,
+    visibility 0s linear 0.38s;
   font-family: var(--fx-font);
   --fx-accent: var(--fx-accent-on-dark);
 }
 
 #offcanvas-menu.fx-drawer.toggled {
   transform: translateX(0);
+  box-shadow: -18px 0 40px rgba(3, 22, 51, 0.35);
+  visibility: visible;
+  transition:
+    transform 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.38s ease,
+    visibility 0s;
 }
 
 .fx-drawer-head {
